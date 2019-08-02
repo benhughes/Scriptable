@@ -1,0 +1,1571 @@
+{
+  "1": null,
+  "2": null,
+  "3": null,
+  "displayRemoveButton": false,
+  "watch": [],
+  "hiddenTodos": [],
+  "todos": {
+    "type": "document",
+    "depth": 0,
+    "children": [
+      {
+        "type": "task",
+        "value": "ask Dimitar how his dealing with Sam has been",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, shortcut)",
+          "due(2019-04-30 19:00)"
+        ],
+        "index": {
+          "offset": 0,
+          "line": 1,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Add a design session meeting with Piotr about how we can relate workflows to other vault objects",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, shortcut)",
+          "due(2019-04-30 19:00)"
+        ],
+        "index": {
+          "offset": 141,
+          "line": 2,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Contact Virgin Trains  ",
+        "tags": [],
+        "index": {
+          "offset": 333,
+          "line": 3,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "https://www.virgintrains.co.uk/help-and-contact/lost-property\n\n@parallel(true) @autodone(false) @context(work) @tags(work, now, shortcut) @due(2019-04-30 19:00)\nhttps://www.virgintrains.co.uk/help-and-contact/lost-property\n",
+            "depth": 2,
+            "index": {
+              "offset": 360,
+              "line": 4,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "wash ipad screen  @parallel(true)",
+        "tags": [
+          "autodone(false)",
+          "context(routine)",
+          "tags(routine, work, shortcut)",
+          "due(2019-05-01 11:00)",
+          "defer(2019-05-01 00:00)",
+          "repeat-method(due-after-completion)",
+          "repeat-rule(FREQ=WEEKLY;BYDAY=MO,WE,FR)"
+        ],
+        "index": {
+          "offset": 587,
+          "line": 9,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Monthly playlist",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(weekend)",
+          "tags(weekend, evening, work)",
+          "due(2019-05-01 17:00)",
+          "repeat-method(fixed)",
+          "repeat-rule(FREQ=MONTHLY;BYMONTHDAY=1)"
+        ],
+        "index": {
+          "offset": 815,
+          "line": 10,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "https://todoist.com/showTask?id=2755817736\nLabels: 2148621500\n2148621503\n2148621504\n{\"in_history\":0,\"is_archived\":0,\"labels\":[2148621500,2148621503,2148621504],\"date_added\":\"Fri 03 Aug 2018 08:56:15 +0000\",\"day_order\":-1,\"user_id\":8682214,\"parent_id\":null,\"assigned_by_uid\":null,\"priority\":1,\"all_day\":true,\"date_lang\":\"en\",\"id\":2755817736,\"date_string\":\"every 1st\",\"due_date_utc\":\"Thu 01 Nov 2018 23:59:59 +0000\",\"date_completed\":null,\"project_id\":177156205,\"collapsed\":0,\"sync_id\":null,\"item_order\":510,\"checked\":0,\"responsible_uid\":null,\"indent\":1,\"content\":\"Monthly playlist\",\"is_deleted\":0}\n",
+            "depth": 2,
+            "index": {
+              "offset": 1001,
+              "line": 11,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "Monthly plan for date nights",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, shortcut, evening, weekend, lunch)",
+          "due(2019-05-01 19:00)",
+          "repeat-method(fixed)",
+          "repeat-rule(FREQ=MONTHLY;BYMONTHDAY=1)"
+        ],
+        "index": {
+          "offset": 1606,
+          "line": 19,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Coffee with Dora",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, shortcut)",
+          "due(2019-05-01 19:00)"
+        ],
+        "index": {
+          "offset": 1817,
+          "line": 20,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "PR review Afternoon",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(routine)",
+          "tags(routine, work)",
+          "due(2019-05-01 19:00)",
+          "defer(2019-05-01 13:00)",
+          "repeat-method(due-after-completion)",
+          "repeat-rule(FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR)"
+        ],
+        "index": {
+          "offset": 1929,
+          "line": 21,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Chase up about bed",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, shortcut)",
+          "due(2019-05-01 19:00)"
+        ],
+        "index": {
+          "offset": 2155,
+          "line": 22,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Project Reviews",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(routine)",
+          "tags(routine, work, evening, weekend)",
+          "due(2019-05-03 19:00)",
+          "defer(2019-05-03 00:00)",
+          "repeat-method(due-after-completion)",
+          "repeat-rule(FREQ=WEEKLY;BYDAY=FR)"
+        ],
+        "index": {
+          "offset": 2269,
+          "line": 23,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Book Friday Barre",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(routine)",
+          "tags(routine, work)",
+          "due(2019-05-03 19:00)",
+          "defer(2019-05-03 00:00)",
+          "repeat-method(due-after-completion)",
+          "repeat-rule(FREQ=WEEKLY;BYDAY=FR)"
+        ],
+        "index": {
+          "offset": 2497,
+          "line": 24,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Do reciepts",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work : channel : 1)",
+          "tags(work : channel : 1, routine, work, shortcut)",
+          "due(2019-05-03 19:00)",
+          "defer(2019-05-03 00:00)",
+          "repeat-method(due-after-completion)",
+          "repeat-rule(FREQ=WEEKLY;BYDAY=FR)"
+        ],
+        "index": {
+          "offset": 2709,
+          "line": 25,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Book Football",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(routine)",
+          "tags(routine, work)",
+          "due(2019-05-03 19:00)",
+          "defer(2019-05-03 00:00)",
+          "repeat-method(due-after-completion)",
+          "repeat-rule(FREQ=WEEKLY;BYDAY=FR)"
+        ],
+        "index": {
+          "offset": 2956,
+          "line": 26,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "https://better.legendonlineservices.co.uk/Finsbury_LC/account/login\n",
+            "depth": 2,
+            "index": {
+              "offset": 3165,
+              "line": 27,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "see the physio now",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(lunch)",
+          "tags(lunch, evening, weekend, work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 3234,
+          "line": 29,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Review on boarding docs to keep up to date with what's going on at TM",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 3356,
+          "line": 30,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "need a new systems design questions",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 3503,
+          "line": 31,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Read this book Peopleware  @parallel(true)",
+        "tags": [
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 3616,
+          "line": 32,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "https://www.amazon.co.uk/Peopleware-Productive-Projects-Tom-DeMarco-ebook/dp/B00DY5A8X2\n",
+            "depth": 2,
+            "index": {
+              "offset": 3721,
+              "line": 33,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "Dentist",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(lunch)",
+          "tags(lunch, evening, weekend, work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 3810,
+          "line": 35,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Arrange dinner with guys",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(lunch)",
+          "tags(lunch, evening, weekend, work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 3921,
+          "line": 36,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Add slack DND to shortcuts   ",
+        "tags": [],
+        "index": {
+          "offset": 4049,
+          "line": 37,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "https://www.icloud.com/shortcuts/5b661440b80f43379f64fea4898b43f7\n\n@parallel(true) @autodone(false) @context(evening) @tags(evening, weekend, work, now, shortcut)\nhttps://www.icloud.com/shortcuts/5b661440b80f43379f64fea4898b43f7\n",
+            "depth": 2,
+            "index": {
+              "offset": 4082,
+              "line": 38,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "Chase up handed in iPad case",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(evening)",
+          "tags(evening, weekend, work, now, shortcut, work : radar)"
+        ],
+        "index": {
+          "offset": 4315,
+          "line": 43,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "How to be a buddy in applications",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 4456,
+          "line": 44,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Jessie issue",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(lunch)",
+          "tags(lunch, evening, weekend, work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 4567,
+          "line": 45,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "new company card",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)",
+          "defer(2019-03-01 00:00)"
+        ],
+        "index": {
+          "offset": 4683,
+          "line": 46,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "create a complicated workflow to test how it works",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 4802,
+          "line": 47,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Come up with an idea about how we do config for ops dashboard",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 4930,
+          "line": 48,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "remove customer -> Accounts endpoint",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 5069,
+          "line": 49,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Read this",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 5183,
+          "line": 50,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "https://github.com/markerikson/react-redux-links/blob/master/react-hooks.md?utm_source=share\n",
+            "depth": 2,
+            "index": {
+              "offset": 5271,
+              "line": 51,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "Look at API docs and work out what is not possible in ops dash",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 5365,
+          "line": 53,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "how can I improve my spelling and gramma",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(evening)",
+          "tags(evening, weekend, work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 5505,
+          "line": 54,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "What do we do about hot fixes? Answer for Bintal",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 5644,
+          "line": 55,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Ops Dashboard Release Notes",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(routine)",
+          "tags(routine, work, now, shortcut)",
+          "repeat-method(due-after-completion)",
+          "repeat-rule(FREQ=WEEKLY;BYDAY=WE)"
+        ],
+        "index": {
+          "offset": 5770,
+          "line": 56,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Increase my knowledge of documentation writing",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 5959,
+          "line": 57,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "create tickets for data pipelines",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 6083,
+          "line": 58,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Watch this video on Dan Abramov teaches react hooks:  ",
+        "tags": [],
+        "index": {
+          "offset": 6194,
+          "line": 59,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "https://www.reddit.com/r/reactjs/comments/b8f2ux/dan_abramov_teaches_me_react_hooks/?utm_source=share @parallel(true) @autodone(false) @context(evening) @tags(evening, weekend, work, now, shortcut)\nhttps://www.reddit.com/r/reactjs/comments/b8f2ux/dan_abramov_teaches_me_react_hooks/?utm_source=share\n",
+            "depth": 2,
+            "index": {
+              "offset": 6252,
+              "line": 60,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "talk to duffy about extending the systems design interview out to the rest of the company",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 6554,
+          "line": 63,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Default account denomination issue",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 6721,
+          "line": 64,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Can I maintain a list of what ticket is play right now in docs and ops (and maybe XPL)",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 6833,
+          "line": 65,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "create tickets for pipelines",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, shortcut, now)"
+        ],
+        "index": {
+          "offset": 6997,
+          "line": 66,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "plan what we can do for the streaming API docs",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work : radar)",
+          "tags(work : radar, work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 7103,
+          "line": 67,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Do we need to display payment device at some point",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 7249,
+          "line": 68,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "The Web Developer's Guide to DNS | RJ Zaworski  ",
+        "tags": [],
+        "index": {
+          "offset": 7377,
+          "line": 69,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "https://rjzaworski.com/2019/04/the-web-developers-guide-to-dns\n\n@parallel(true) @autodone(false) @context(work) @tags(work, now, shortcut)\nhttps://rjzaworski.com/2019/04/the-web-developers-guide-to-dns\n",
+            "depth": 2,
+            "index": {
+              "offset": 7429,
+              "line": 70,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "applications drinks",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work : radar)",
+          "tags(work : radar, work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 7635,
+          "line": 75,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Look at everything for FPR and start creating the tickets and the tasks I need to do",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work : channel : 1)",
+          "tags(work : channel : 1, work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 7754,
+          "line": 76,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "would like to have permissions for adding and reading notes",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 7950,
+          "line": 77,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Read this - Comprehensive list of built-in utility types in TypeScript  @parallel(true)",
+        "tags": [
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 8087,
+          "line": 78,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "https://www.reddit.com/r/typescript/comments/b2xftx/comprehensive_list_of_builtin_utility_types_in/?utm_source=share\n",
+            "depth": 2,
+            "index": {
+              "offset": 8237,
+              "line": 79,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "Move Christians design review",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, work : radar)"
+        ],
+        "index": {
+          "offset": 8355,
+          "line": 81,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Documentation Release Notes",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(routine)",
+          "tags(routine, work, now)",
+          "repeat-method(due-after-completion)",
+          "repeat-rule(FREQ=WEEKLY;BYDAY=WE)"
+        ],
+        "index": {
+          "offset": 8466,
+          "line": 82,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "set up session to decide documentation workflow",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 8645,
+          "line": 83,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Add Anne to documentation mailing lists",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work : radar)",
+          "tags(work : radar, work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 8770,
+          "line": 84,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Read this about mono repo",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 8909,
+          "line": 85,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "https://areknawo.com/full-blown-monorepo-setup-walkthrough/?utm_source=share\n",
+            "depth": 2,
+            "index": {
+              "offset": 9013,
+              "line": 86,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "Read this about javascript seniors",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 9091,
+          "line": 88,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "https://www.reddit.com/r/javascript/comments/bfeddh/i_am_interested_in_hearing_from_javascript/?utm_source=share\n",
+            "depth": 2,
+            "index": {
+              "offset": 9204,
+              "line": 89,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "get someone to help out docs with Dan",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 9318,
+          "line": 91,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Create ticket for T24128 needing a workflow",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 9433,
+          "line": 92,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Will ticket mutations come with the new audit functionality or is that a job for the tickets guys",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 9554,
+          "line": 93,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Away day",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 9729,
+          "line": 94,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Have a look at this: uber/cadence: Cadence is a distributed, scalable, durable, and highly available orchestration engine to execute asynchronous long-running business logic in a scalable and resilient way.  ",
+        "tags": [],
+        "index": {
+          "offset": 9815,
+          "line": 95,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "https://github.com/uber/cadence\n\n@parallel(true) @autodone(false) @context(work) @tags(work, now, shortcut)\nhttps://github.com/uber/cadence\n",
+            "depth": 2,
+            "index": {
+              "offset": 10027,
+              "line": 96,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "How is the new roles stuff going. Need some insight on how this effects us.  ",
+        "tags": [],
+        "index": {
+          "offset": 10171,
+          "line": 101,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "@parallel(true) @autodone(false) @context(work) @tags(work, now, shortcut)\n",
+            "depth": 2,
+            "index": {
+              "offset": 10253,
+              "line": 102,
+              "column": 3
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "Should we allow future dated params to contain time?",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 10328,
+          "line": 103,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Create a Epic creation checklist",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 10458,
+          "line": 104,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Grammar linter",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 10568,
+          "line": 105,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Read up on the balances changing",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 10660,
+          "line": 106,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Talk to fabian about getting a password protected site up and running",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, shortcut)"
+        ],
+        "index": {
+          "offset": 10770,
+          "line": 107,
+          "column": 1
+        },
+        "depth": 1,
+        "children": [
+          {
+            "type": "note",
+            "value": "Yes I know but with the password protected site coming post FPR we needed a temporary solution. Once we have the functionality we'll migrate this saying that I'll chat to cloud and see if it's possible to do this pre FPR.\n",
+            "depth": 2,
+            "index": {
+              "offset": 10918,
+              "line": 108,
+              "column": 2
+            }
+          }
+        ]
+      },
+      {
+        "type": "task",
+        "value": "Work out what we need",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 11141,
+          "line": 110,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Prepare Design Review",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 11235,
+          "line": 111,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Work out what is needed from clients",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 11329,
+          "line": 112,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Prepare RFC",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 11438,
+          "line": 113,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Display Tracing IDs in error messages",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 11522,
+          "line": 114,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Work out what is needed",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 11632,
+          "line": 115,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Is this done?",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 11728,
+          "line": 116,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "What do we need to do for this?",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 11814,
+          "line": 117,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "What needs to be done for this?",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 11918,
+          "line": 118,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Check on progress",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)",
+          "defer(2019-04-07 00:00)",
+          "repeat-method(start-after-completion)",
+          "repeat-rule(FREQ=DAILY;INTERVAL=3)"
+        ],
+        "index": {
+          "offset": 12022,
+          "line": 119,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Work out what we need",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 12212,
+          "line": 120,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Get what work is needed to complete this",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 12306,
+          "line": 121,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Work out what we need",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 12419,
+          "line": 122,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Convert protype to list of V1 features",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 12513,
+          "line": 123,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Create Tickets",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 12624,
+          "line": 124,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Can we class this as done",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 12711,
+          "line": 125,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Work out what we need",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 12809,
+          "line": 126,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Create Tickets",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 12903,
+          "line": 127,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      },
+      {
+        "type": "task",
+        "value": "Work out what is needed to interact with Accounts team’s new custom attributes",
+        "tags": [
+          "parallel(true)",
+          "autodone(false)",
+          "context(work)",
+          "tags(work, now, fpr)"
+        ],
+        "index": {
+          "offset": 12990,
+          "line": 128,
+          "column": 1
+        },
+        "depth": 1,
+        "children": []
+      }
+    ]
+  }
+}
