@@ -12,8 +12,20 @@ const prettierConfig = {
 const fm = FileManager.iCloud();
 const docsDir = fm.documentsDirectory();
 
+let scriptNames = getScriptNames();
+
+const scripts = config.runsInApp ? await pickScriptName() : scriptNames;
+
+scripts.forEach(script => {
+  const scriptContent = getScriptContent(script);
+  const newScriptContent = prettier(scriptContent, prettierConfig);
+  if (scriptContent !== newScriptContent) {
+    overwriteScript(script, newScriptContent);
+    console.log(`updated ${script}`);
+  }
+});
+
 async function pickScriptName() {
-  let scriptNames = getScriptNames();
   let alert = new Alert();
   alert.title = 'Select Script';
   alert.message =
@@ -49,14 +61,3 @@ function getScriptContent(scriptName) {
 function overwriteScript(scriptName, newContent) {
   return fm.writeString(`${docsDir}/${scriptName}`, newContent);
 }
-
-const scripts = await pickScriptName();
-
-scripts.forEach(script => {
-  const scriptContent = getScriptContent(script);
-  const newScriptContent = prettier(scriptContent, prettierConfig);
-  if (scriptContent !== newScriptContent) {
-    overwriteScript(script, newScriptContent);
-    console.log(`updated ${script}`);
-  }
-});
