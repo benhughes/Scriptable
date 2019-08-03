@@ -13,7 +13,7 @@ const fm = FileManager.iCloud();
 const docsDir = fm.documentsDirectory();
 
 async function pickScriptName() {
-  let scriptNames = getScriptNames();
+  let scriptNames = ['all', ...getScriptNames()];
   let alert = new Alert();
   alert.title = 'Select Script';
   alert.message =
@@ -24,9 +24,11 @@ async function pickScriptName() {
   alert.addCancelAction('Cancel');
   let idx = await alert.presentAlert();
   if (idx == -1) {
-    return null;
+    return [];
+  } else if (idx === 0) {
+    return scriptNames;
   } else {
-    return scriptNames[idx];
+    return [scriptNames[idx]];
   }
 }
 
@@ -48,10 +50,11 @@ function overwriteScript(scriptName, newContent) {
   return fm.writeString(`${docsDir}/${scriptName}`, newContent);
 }
 
-const script = await pickScriptName();
-if (!script) {
-  return;
-}
-const scriptContent = getScriptContent(script);
-const newScriptContent = prettier(scriptContent, prettierConfig);
-overwriteScript(script, newScriptContent);
+const scripts = await pickScriptName();
+
+scripts.forEach(script => {
+  const scriptContent = getScriptContent(script);
+  const newScriptContent = prettier(scriptContent, prettierConfig);
+  overwriteScript(script, newScriptContent);
+  console.log(`updated ${script}`);
+});
