@@ -1,12 +1,14 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: blue; icon-glyph: magic;
-const prettier = importModule('./libs/prettier');
+const {prettier, parserBabylon} = importModule('./libs/prettier');
 
 const prettierConfig = {
   singleQuote: true,
   trailingComma: 'es5',
   bracketSpacing: false,
+  parser: 'babel',
+  plugins: [parserBabylon],
 };
 
 const fm = FileManager.iCloud();
@@ -18,7 +20,7 @@ const scripts = config.runsInApp ? await pickScriptName() : scriptNames;
 
 scripts.forEach(script => {
   const scriptContent = getScriptContent(script);
-  const newScriptContent = prettier(scriptContent, prettierConfig);
+  const newScriptContent = prettier.format(scriptContent, prettierConfig);
   if (scriptContent !== newScriptContent) {
     overwriteScript(script, newScriptContent);
     console.log(`updated ${script}`);
