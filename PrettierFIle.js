@@ -13,22 +13,23 @@ const fm = FileManager.iCloud();
 const docsDir = fm.documentsDirectory();
 
 async function pickScriptName() {
-  let scriptNames = ['all', ...getScriptNames()];
+  let scriptNames = getScriptNames();
   let alert = new Alert();
   alert.title = 'Select Script';
   alert.message =
     'The script can be run by force touching or long pressing on the notification.';
-  for (scriptName of scriptNames) {
-    alert.addAction(scriptName);
-  }
+
+  alert.addAction('all');
+  scriptNames.forEach(scriptName => alert.addAction(scriptName));
   alert.addCancelAction('Cancel');
+
   let idx = await alert.presentAlert();
   if (idx == -1) {
     return [];
   } else if (idx === 0) {
     return scriptNames;
   } else {
-    return [scriptNames[idx]];
+    return [scriptNames[idx - 1]];
   }
 }
 
@@ -42,7 +43,6 @@ function getScriptNames() {
 }
 
 function getScriptContent(scriptName) {
-  console.log(`${docsDir}/${scriptName}`);
   return fm.readString(`${docsDir}/${scriptName}`);
 }
 
