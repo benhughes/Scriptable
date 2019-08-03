@@ -208,9 +208,7 @@ const speakNextTrain = times => {
 };
 
 async function main() {
-  const url = `https://api.tfl.gov.uk/Line/london-overground/Arrivals/${
-    from.id
-  }`;
+  const url = `https://api.tfl.gov.uk/Line/london-overground/Arrivals/${from.id}`;
 
   const req = new Request(url);
   const result = await req.loadJSON();

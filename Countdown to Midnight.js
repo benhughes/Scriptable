@@ -50,5 +50,5 @@ let timer = setInterval(function() {
   }
 }, 1000)
 </script>
-`
-WebView.loadHTML(html, null, new Size(0, 100))
+`;
+WebView.loadHTML(html, null, new Size(0, 100));

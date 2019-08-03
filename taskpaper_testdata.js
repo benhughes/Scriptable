@@ -32,6 +32,6 @@ const TEST_DATA = `- Contact Virgin Trains
 - Hamish Progs - Get Buddy feedback @parallel(true) @autodone(false) @context(work) @tags(work, now) @due(2019-05-20 19:00)
 - Ewan Progs - Get Buddy nominations @parallel(true) @autodone(false) @context(work) @tags(work, now) @due(2019-05-20 19:00)
 - Reschedule notes @parallel(true) @autodone(false) @context(work) @tags(work, now, shortcut)
-`
+`;
 
 module.exports = TEST_DATA;

@@ -48,12 +48,21 @@ PvB: 0
 PsG: 0
 PmB: 0
 PsB: 0
-PvB: 0`
+PvB: 0`;
 
 const types = ['PmB', 'PmG', 'PvB', 'PvG', 'HoB', 'PsB', 'PsG'];
 
-let q = test.split('\n').map(q => q.split(': '))
+let q = test.split('\n').map(q => q.split(': '));
 
-let result = types.map(t => [t, q.filter(([a,b]) => a === t).map(([a,b]) => b).reduce((a,b) => parseInt(a, 10) + parseInt(b, 10), 0)]).map(a => a.join(': ')).join('\n')
-console.log(result)
-Pasteboard.copyString(result)
+let result = types
+  .map(t => [
+    t,
+    q
+      .filter(([a, b]) => a === t)
+      .map(([a, b]) => b)
+      .reduce((a, b) => parseInt(a, 10) + parseInt(b, 10), 0),
+  ])
+  .map(a => a.join(': '))
+  .join('\n');
+console.log(result);
+Pasteboard.copyString(result);

@@ -61,9 +61,7 @@ const speakNextTrain = times => {
 };
 
 async function main() {
-  const url = `https://api.tfl.gov.uk/Line/london-overground/Arrivals/${
-    from.id
-  }?destinationStationId=${to.id}`;
+  const url = `https://api.tfl.gov.uk/Line/london-overground/Arrivals/${from.id}?destinationStationId=${to.id}`;
   let result;
 
   if (!IS_TEST) {
@@ -77,15 +75,12 @@ async function main() {
   } else {
     result = TEST_DATA;
   }
-  
-  const resultLength = config.runsInNotification ? 5 : result.length
-    
-  const sorted = result.sort(
-    (a, b) => a.timeToStation - b.timeToStation
-  ).splice(0, resultLength);
-  
 
-    
+  const resultLength = config.runsInNotification ? 5 : result.length;
+
+  const sorted = result
+    .sort((a, b) => a.timeToStation - b.timeToStation)
+    .splice(0, resultLength);
 
   const table = new UITable();
   table.showSeparators = true;
@@ -99,7 +94,7 @@ async function main() {
 
   if (IS_TEST) {
     const row = new UITableRow();
-    const titleCell = row.addText("Test Mode");
+    const titleCell = row.addText('Test Mode');
     titleCell.widthWeight = 80;
     row.height = 60;
     row.cellSpacing = 10;

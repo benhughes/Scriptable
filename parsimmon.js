@@ -1,7 +1,7 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: brown; icon-glyph: magic;
-"use strict";
+'use strict';
 
 function Parsimmon(action) {
   if (!(this instanceof Parsimmon)) {
@@ -62,11 +62,11 @@ function lshiftBuffer(input) {
 }
 
 function consumeBitsFromBuffer(n, input) {
-  var state = { v: 0, buf: input };
+  var state = {v: 0, buf: input};
   times(n, function() {
     state = {
       v: (state.v << 1) | bitPeekBuffer(state.buf),
-      buf: lshiftBuffer(state.buf)
+      buf: lshiftBuffer(state.buf),
     };
   });
   return state;
@@ -97,15 +97,15 @@ function find(pred, arr) {
 }
 
 function bufferExists() {
-  return typeof Buffer !== "undefined";
+  return typeof Buffer !== 'undefined';
 }
 
 function ensureBuffer() {
-//   if (!bufferExists()) {
-//     throw new Error(
-//       "Buffer global does not exist; please consider using https://github.com/feross/buffer if you are running Parsimmon in a browser."
-//     );
-//   }
+  //   if (!bufferExists()) {
+  //     throw new Error(
+  //       "Buffer global does not exist; please consider using https://github.com/feross/buffer if you are running Parsimmon in a browser."
+  //     );
+  //   }
 }
 
 function bitSeq(alignments) {
@@ -113,11 +113,11 @@ function bitSeq(alignments) {
   var totalBits = sum(alignments);
   if (totalBits % 8 !== 0) {
     throw new Error(
-      "The bits [" +
-        alignments.join(", ") +
-        "] add up to " +
+      'The bits [' +
+        alignments.join(', ') +
+        '] add up to ' +
         totalBits +
-        " which is not an even number of bytes; the total should be divisible by 8"
+        ' which is not an even number of bytes; the total should be divisible by 8'
     );
   }
   var bytes = totalBits / 8;
@@ -127,14 +127,14 @@ function bitSeq(alignments) {
   }, alignments);
   if (tooBigRange) {
     throw new Error(
-      tooBigRange + " bit range requested exceeds 48 bit (6 byte) Number max."
+      tooBigRange + ' bit range requested exceeds 48 bit (6 byte) Number max.'
     );
   }
 
   return new Parsimmon(function(input, i) {
     var newPos = bytes + i;
     if (newPos > input.length) {
-      return makeFailure(i, bytes.toString() + " bytes");
+      return makeFailure(i, bytes.toString() + ' bytes');
     }
     return makeSuccess(
       newPos,
@@ -143,10 +143,10 @@ function bitSeq(alignments) {
           var state = consumeBitsFromBuffer(bits, acc.buf);
           return {
             coll: acc.coll.concat(state.v),
-            buf: state.buf
+            buf: state.buf,
           };
         },
-        { coll: [], buf: input.slice(i, newPos) },
+        {coll: [], buf: input.slice(i, newPos)},
         alignments
       ).coll
     );
@@ -162,16 +162,16 @@ function bitSeqObj(namedAlignments) {
       var pair = item;
       if (pair.length !== 2) {
         throw new Error(
-          "[" +
-            pair.join(", ") +
-            "] should be length 2, got length " +
+          '[' +
+            pair.join(', ') +
+            '] should be length 2, got length ' +
             pair.length
         );
       }
       assertString(pair[0]);
       assertNumber(pair[1]);
       if (Object.prototype.hasOwnProperty.call(seenKeys, pair[0])) {
-        throw new Error("duplicate key in bitSeqObj: " + pair[0]);
+        throw new Error('duplicate key in bitSeqObj: ' + pair[0]);
       }
       seenKeys[pair[0]] = true;
       totalKeys++;
@@ -183,9 +183,9 @@ function bitSeqObj(namedAlignments) {
   }, namedAlignments);
   if (totalKeys < 1) {
     throw new Error(
-      "bitSeqObj expects at least one named pair, got [" +
-        namedAlignments.join(", ") +
-        "]"
+      'bitSeqObj expects at least one named pair, got [' +
+        namedAlignments.join(', ') +
+        ']'
     );
   }
   var namesOnly = map(function(pair) {
@@ -217,82 +217,82 @@ function parseBufferFor(other, length) {
   ensureBuffer();
   return new Parsimmon(function(input, i) {
     if (i + length > input.length) {
-      return makeFailure(i, length + " bytes for " + other);
+      return makeFailure(i, length + ' bytes for ' + other);
     }
     return makeSuccess(i + length, input.slice(i, i + length));
   });
 }
 
 function parseBuffer(length) {
-  return parseBufferFor("buffer", length).map(function(unsafe) {
+  return parseBufferFor('buffer', length).map(function(unsafe) {
     return Buffer.from(unsafe);
   });
 }
 
 function encodedString(encoding, length) {
-  return parseBufferFor("string", length).map(function(buff) {
+  return parseBufferFor('string', length).map(function(buff) {
     return buff.toString(encoding);
   });
 }
 
 function isInteger(value) {
-  return typeof value === "number" && Math.floor(value) === value;
+  return typeof value === 'number' && Math.floor(value) === value;
 }
 
 function assertValidIntegerByteLengthFor(who, length) {
   if (!isInteger(length) || length < 0 || length > 6) {
-    throw new Error(who + " requires integer length in range [0, 6].");
+    throw new Error(who + ' requires integer length in range [0, 6].');
   }
 }
 
 function uintBE(length) {
-  assertValidIntegerByteLengthFor("uintBE", length);
-  return parseBufferFor("uintBE(" + length + ")", length).map(function(buff) {
+  assertValidIntegerByteLengthFor('uintBE', length);
+  return parseBufferFor('uintBE(' + length + ')', length).map(function(buff) {
     return buff.readUIntBE(0, length);
   });
 }
 
 function uintLE(length) {
-  assertValidIntegerByteLengthFor("uintLE", length);
-  return parseBufferFor("uintLE(" + length + ")", length).map(function(buff) {
+  assertValidIntegerByteLengthFor('uintLE', length);
+  return parseBufferFor('uintLE(' + length + ')', length).map(function(buff) {
     return buff.readUIntLE(0, length);
   });
 }
 
 function intBE(length) {
-  assertValidIntegerByteLengthFor("intBE", length);
-  return parseBufferFor("intBE(" + length + ")", length).map(function(buff) {
+  assertValidIntegerByteLengthFor('intBE', length);
+  return parseBufferFor('intBE(' + length + ')', length).map(function(buff) {
     return buff.readIntBE(0, length);
   });
 }
 
 function intLE(length) {
-  assertValidIntegerByteLengthFor("intLE", length);
-  return parseBufferFor("intLE(" + length + ")", length).map(function(buff) {
+  assertValidIntegerByteLengthFor('intLE', length);
+  return parseBufferFor('intLE(' + length + ')', length).map(function(buff) {
     return buff.readIntLE(0, length);
   });
 }
 
 function floatBE() {
-  return parseBufferFor("floatBE", 4).map(function(buff) {
+  return parseBufferFor('floatBE', 4).map(function(buff) {
     return buff.readFloatBE(0);
   });
 }
 
 function floatLE() {
-  return parseBufferFor("floatLE", 4).map(function(buff) {
+  return parseBufferFor('floatLE', 4).map(function(buff) {
     return buff.readFloatLE(0);
   });
 }
 
 function doubleBE() {
-  return parseBufferFor("doubleBE", 8).map(function(buff) {
+  return parseBufferFor('doubleBE', 8).map(function(buff) {
     return buff.readDoubleBE(0);
   });
 }
 
 function doubleLE() {
-  return parseBufferFor("doubleLE", 8).map(function(buff) {
+  return parseBufferFor('doubleLE', 8).map(function(buff) {
     return buff.readDoubleLE(0);
   });
 }
@@ -307,7 +307,7 @@ function isParser(obj) {
 }
 
 function isArray(x) {
-  return {}.toString.call(x) === "[object Array]";
+  return {}.toString.call(x) === '[object Array]';
 }
 
 function isBuffer(x) {
@@ -321,7 +321,7 @@ function makeSuccess(index, value) {
     index: index,
     value: value,
     furthest: -1,
-    expected: []
+    expected: [],
   };
 }
 
@@ -334,7 +334,7 @@ function makeFailure(index, expected) {
     index: -1,
     value: null,
     furthest: index,
-    expected: expected
+    expected: expected,
   };
 }
 
@@ -354,7 +354,7 @@ function mergeReplies(result, last) {
     index: result.index,
     value: result.value,
     furthest: last.furthest,
-    expected: expected
+    expected: expected,
   };
 }
 
@@ -363,10 +363,10 @@ function makeLineColumnIndex(input, i) {
     return {
       offset: i,
       line: -1,
-      column: -1
+      column: -1,
     };
   }
-  var lines = input.slice(0, i).split("\n");
+  var lines = input.slice(0, i).split('\n');
   // Note that unlike the character offset, the line and column offsets are
   // 1-based.
   var lineWeAreUpTo = lines.length;
@@ -374,7 +374,7 @@ function makeLineColumnIndex(input, i) {
   return {
     offset: i,
     line: lineWeAreUpTo,
-    column: columnWeAreUpTo
+    column: columnWeAreUpTo,
   };
 }
 
@@ -399,12 +399,12 @@ function union(xs, ys) {
 
 function assertParser(p) {
   if (!isParser(p)) {
-    throw new Error("not a parser: " + p);
+    throw new Error('not a parser: ' + p);
   }
 }
 
 function get(input, i) {
-  if (typeof input === "string") {
+  if (typeof input === 'string') {
     return input.charAt(i);
   }
   return input[i];
@@ -413,41 +413,41 @@ function get(input, i) {
 // TODO[ES5]: Switch to Array.isArray eventually.
 function assertArray(x) {
   if (!isArray(x)) {
-    throw new Error("not an array: " + x);
+    throw new Error('not an array: ' + x);
   }
 }
 
 function assertNumber(x) {
-  if (typeof x !== "number") {
-    throw new Error("not a number: " + x);
+  if (typeof x !== 'number') {
+    throw new Error('not a number: ' + x);
   }
 }
 
 function assertRegexp(x) {
-//   if (!(x instanceof RegExp)) {
-//     throw new Error("not a regexp: " + x);
-//   }
+  //   if (!(x instanceof RegExp)) {
+  //     throw new Error("not a regexp: " + x);
+  //   }
   var f = flags(x);
   for (var i = 0; i < f.length; i++) {
     var c = f.charAt(i);
     // Only allow regexp flags [imu] for now, since [g] and [y] specifically
     // mess up Parsimmon. If more non-stateful regexp flags are added in the
     // future, this will need to be revisited.
-    if (c !== "i" && c !== "m" && c !== "u") {
+    if (c !== 'i' && c !== 'm' && c !== 'u') {
       throw new Error('unsupported regexp flag "' + c + '": ' + x);
     }
   }
 }
 
 function assertFunction(x) {
-  if (typeof x !== "function") {
-    throw new Error("not a function: " + x);
+  if (typeof x !== 'function') {
+    throw new Error('not a function: ' + x);
   }
 }
 
 function assertString(x) {
-  if (typeof x !== "string") {
-    throw new Error("not a string: " + x);
+  if (typeof x !== 'string') {
+    throw new Error('not a string: ' + x);
   }
 }
 
@@ -458,7 +458,7 @@ var linesAfterStringError = 3;
 var bytesPerLine = 8;
 var bytesBefore = bytesPerLine * 5;
 var bytesAfter = bytesPerLine * 4;
-var defaultLinePrefix = "  ";
+var defaultLinePrefix = '  ';
 
 function repeat(string, amount) {
   return new Array(amount + 1).join(string);
@@ -466,9 +466,9 @@ function repeat(string, amount) {
 
 function formatExpected(expected) {
   if (expected.length === 1) {
-    return "Expected:\n\n" + expected[0];
+    return 'Expected:\n\n' + expected[0];
   }
-  return "Expected one of the following: \n\n" + expected.join(", ");
+  return 'Expected one of the following: \n\n' + expected.join(', ');
 }
 
 function leftPad(str, pad, char) {
@@ -508,7 +508,7 @@ function rangeFromIndexAndOffsets(i, before, after, length) {
   return {
     // Guard against the negative upper bound for lines included in the output.
     from: i - before > 0 ? i - before : 0,
-    to: i + after > length ? length : i + after
+    to: i + after > length ? length : i + after,
   };
 }
 
@@ -517,14 +517,14 @@ function byteRangeToRange(byteRange) {
   if (byteRange.from === 0 && byteRange.to === 1) {
     return {
       from: byteRange.from,
-      to: byteRange.to
+      to: byteRange.to,
     };
   }
 
   return {
     from: byteRange.from / bytesPerLine,
     // Round `to`, so we don't get float if the amount of bytes is not divisible by `bytesPerLine`
-    to: Math.floor(byteRange.to / bytesPerLine)
+    to: Math.floor(byteRange.to / bytesPerLine),
   };
 }
 
@@ -540,7 +540,7 @@ function formatGot(input, error) {
   var lastLineNumberLabelLength;
 
   if (i === input.length) {
-    return "Got the end of the input";
+    return 'Got the end of the input';
   }
 
   if (isBuffer(input)) {
@@ -558,7 +558,7 @@ function formatGot(input, error) {
     var byteLines = map(function(byteRow) {
       return map(function(byteValue) {
         // Prefix byte values with a `0` if they are shorter than 2 characters.
-        return leftPad(byteValue.toString(16), 2, "0");
+        return leftPad(byteValue.toString(16), 2, '0');
       }, byteRow);
     }, bytesInChunks);
 
@@ -574,8 +574,8 @@ function formatGot(input, error) {
     verticalMarkerLength = 2;
     lines = map(function(byteLine) {
       return byteLine.length <= 4
-        ? byteLine.join(" ")
-        : byteLine.slice(0, 4).join(" ") + "  " + byteLine.slice(4).join(" ");
+        ? byteLine.join(' ')
+        : byteLine.slice(0, 4).join(' ') + '  ' + byteLine.slice(4).join(' ');
     }, byteLines);
     lastLineNumberLabelLength = (
       (lineRange.to > 0 ? lineRange.to - 1 : lineRange.to) * 8
@@ -614,33 +614,33 @@ function formatGot(input, error) {
   var linesWithLineNumbers = reduce(
     function(acc, lineSource, index) {
       var isLineWithError = index === lineWithErrorCurrentIndex;
-      var prefix = isLineWithError ? "> " : defaultLinePrefix;
+      var prefix = isLineWithError ? '> ' : defaultLinePrefix;
       var lineNumberLabel;
 
       if (isBuffer(input)) {
         lineNumberLabel = leftPad(
           ((lineRange.from + index) * 8).toString(16),
           lastLineNumberLabelLength,
-          "0"
+          '0'
         );
       } else {
         lineNumberLabel = leftPad(
           (lineRange.from + index + 1).toString(),
           lastLineNumberLabelLength,
-          " "
+          ' '
         );
       }
 
       return [].concat(
         acc,
-        [prefix + lineNumberLabel + " | " + lineSource],
+        [prefix + lineNumberLabel + ' | ' + lineSource],
         isLineWithError
           ? [
               defaultLinePrefix +
-                repeat(" ", lastLineNumberLabelLength) +
-                " | " +
-                leftPad("", column, " ") +
-                repeat("^", verticalMarkerLength)
+                repeat(' ', lastLineNumberLabelLength) +
+                ' | ' +
+                leftPad('', column, ' ') +
+                repeat('^', verticalMarkerLength),
             ]
           : []
       );
@@ -649,28 +649,28 @@ function formatGot(input, error) {
     lines
   );
 
-  return linesWithLineNumbers.join("\n");
+  return linesWithLineNumbers.join('\n');
 }
 
 function formatError(input, error) {
   return [
-    "\n",
-    "-- PARSING FAILED " + repeat("-", 50),
-    "\n\n",
+    '\n',
+    '-- PARSING FAILED ' + repeat('-', 50),
+    '\n\n',
     formatGot(input, error),
-    "\n\n",
+    '\n\n',
     formatExpected(error.expected),
-    "\n"
-  ].join("");
+    '\n',
+  ].join('');
 }
 
 function flags(re) {
-  var s = "" + re;
-  return s.slice(s.lastIndexOf("/") + 1);
+  var s = '' + re;
+  return s.slice(s.lastIndexOf('/') + 1);
 }
 
 function anchoredRegexp(re) {
-  return RegExp("^(?:" + re.source + ")", flags(re));
+  return RegExp('^(?:' + re.source + ')', flags(re));
 }
 
 // -*- Combinators -*-
@@ -708,11 +708,11 @@ function seqObj() {
     }
     if (isArray(p)) {
       var isWellFormed =
-        p.length === 2 && typeof p[0] === "string" && isParser(p[1]);
+        p.length === 2 && typeof p[0] === 'string' && isParser(p[1]);
       if (isWellFormed) {
         var key = p[0];
         if (Object.prototype.hasOwnProperty.call(seenKeys, key)) {
-          throw new Error("seqObj: duplicate key " + key);
+          throw new Error('seqObj: duplicate key ' + key);
         }
         seenKeys[key] = true;
         totalKeys++;
@@ -720,11 +720,11 @@ function seqObj() {
       }
     }
     throw new Error(
-      "seqObj arguments must be parsers or [string, parser] array pairs."
+      'seqObj arguments must be parsers or [string, parser] array pairs.'
     );
   }
   if (totalKeys === 0) {
-    throw new Error("seqObj expects at least one named parser, found zero");
+    throw new Error('seqObj expects at least one named parser, found zero');
   }
   return Parsimmon(function(input, i) {
     var result;
@@ -755,7 +755,7 @@ function seqObj() {
 function seqMap() {
   var args = [].slice.call(arguments);
   if (args.length === 0) {
-    throw new Error("seqMap needs at least one argument");
+    throw new Error('seqMap needs at least one argument');
   }
   var mapper = args.pop();
   assertFunction(mapper);
@@ -784,7 +784,7 @@ function alt() {
   var parsers = [].slice.call(arguments);
   var numParsers = parsers.length;
   if (numParsers === 0) {
-    return fail("zero alternates");
+    return fail('zero alternates');
   }
   for (var j = 0; j < numParsers; j += 1) {
     assertParser(parsers[j]);
@@ -818,22 +818,22 @@ function sepBy1(parser, separator) {
 // -*- Core Parsing Methods -*-
 
 _.parse = function(input) {
-  if (typeof input !== "string" && !isBuffer(input)) {
+  if (typeof input !== 'string' && !isBuffer(input)) {
     throw new Error(
-      ".parse must be called with a string or Buffer as its argument"
+      '.parse must be called with a string or Buffer as its argument'
     );
   }
   var result = this.skip(eof)._(input, 0);
   if (result.status) {
     return {
       status: true,
-      value: result.value
+      value: result.value,
     };
   }
   return {
     status: false,
     index: makeLineColumnIndex(input, result.furthest),
-    expected: result.expected
+    expected: result.expected,
   };
 };
 
@@ -846,7 +846,7 @@ _.tryParse = function(str) {
   } else {
     var msg = formatError(str, result);
     var err = new Error(msg);
-    err.type = "ParsimmonError";
+    err.type = 'ParsimmonError';
     err.result = result;
     throw err;
   }
@@ -889,8 +889,8 @@ _.many = function() {
       if (result.status) {
         if (i === result.index) {
           throw new Error(
-            "infinite loop detected in .many() parser --- calling .many() on " +
-              "a parser which can accept zero characters is usually the cause"
+            'infinite loop detected in .many() parser --- calling .many() on ' +
+              'a parser which can accept zero characters is usually the cause'
           );
         }
         i = result.index;
@@ -915,13 +915,13 @@ _.tieWith = function(separator) {
       }
       return s;
     } else {
-      return "";
+      return '';
     }
   });
 };
 
 _.tie = function() {
-  return this.tieWith("");
+  return this.tieWith('');
 };
 
 _.times = function(min, max) {
@@ -1016,7 +1016,7 @@ _.mark = function() {
     return {
       start: start,
       value: value,
-      end: end
+      end: end,
     };
   });
 };
@@ -1027,7 +1027,7 @@ _.node = function(name) {
       name: name,
       value: value,
       start: start,
-      end: end
+      end: end,
     };
   });
 };
@@ -1105,14 +1105,14 @@ function byte(b) {
   assertNumber(b);
   if (b > 0xff) {
     throw new Error(
-      "Value specified to byte constructor (" +
+      'Value specified to byte constructor (' +
         b +
-        "=0x" +
+        '=0x' +
         b.toString(16) +
-        ") is larger in value than a single byte."
+        ') is larger in value than a single byte.'
     );
   }
-  var expected = (b > 0xf ? "0x" : "0x0") + b.toString(16);
+  var expected = (b > 0xf ? '0x' : '0x0') + b.toString(16);
   return Parsimmon(function(input, i) {
     var head = get(input, i);
     if (head === b) {
@@ -1131,7 +1131,7 @@ function regexp(re, group) {
     group = 0;
   }
   var anchored = anchoredRegexp(re);
-  var expected = "" + re;
+  var expected = '' + re;
   return Parsimmon(function(input, i) {
     var match = anchored.exec(input.slice(i));
     if (match) {
@@ -1141,7 +1141,7 @@ function regexp(re, group) {
         return makeSuccess(i + fullMatch.length, groupMatch);
       }
       var message =
-        "valid match group (0 to " + match.length + ") in " + expected;
+        'valid match group (0 to ' + match.length + ') in ' + expected;
       return makeFailure(i, message);
     }
     return makeFailure(i, expected);
@@ -1165,15 +1165,15 @@ function lookahead(x) {
     return Parsimmon(function(input, i) {
       var result = x._(input, i);
       result.index = i;
-      result.value = "";
+      result.value = '';
       return result;
     });
-  } else if (typeof x === "string") {
+  } else if (typeof x === 'string') {
     return lookahead(string(x));
   } else if (x instanceof RegExp) {
     return lookahead(regexp(x));
   }
-  throw new Error("not a string, regexp, or parser: " + x);
+  throw new Error('not a string, regexp, or parser: ' + x);
 }
 
 function notFollowedBy(parser) {
@@ -1194,13 +1194,13 @@ function test(predicate) {
     if (i < input.length && predicate(char)) {
       return makeSuccess(i + 1, char);
     } else {
-      return makeFailure(i, "a character/byte matching " + predicate);
+      return makeFailure(i, 'a character/byte matching ' + predicate);
     }
   });
 }
 
 function oneOf(str) {
-  var expected = str.split("");
+  var expected = str.split('');
   for (var idx = 0; idx < expected.length; idx++) {
     expected[idx] = "'" + expected[idx] + "'";
   }
@@ -1223,7 +1223,7 @@ function custom(parsingFunction) {
 function range(begin, end) {
   return test(function(ch) {
     return begin <= ch && ch <= end;
-  }).desc(begin + "-" + end);
+  }).desc(begin + '-' + end);
 }
 
 function takeWhile(predicate) {
@@ -1259,18 +1259,18 @@ function lazy(desc, f) {
 // -*- Fantasy Land Extras -*-
 
 function empty() {
-  return fail("fantasy-land/empty");
+  return fail('fantasy-land/empty');
 }
 
 _.concat = _.or;
 _.empty = empty;
 _.of = succeed;
-_["fantasy-land/ap"] = _.ap;
-_["fantasy-land/chain"] = _.chain;
-_["fantasy-land/concat"] = _.concat;
-_["fantasy-land/empty"] = _.empty;
-_["fantasy-land/of"] = _.of;
-_["fantasy-land/map"] = _.map;
+_['fantasy-land/ap'] = _.ap;
+_['fantasy-land/chain'] = _.chain;
+_['fantasy-land/concat'] = _.concat;
+_['fantasy-land/empty'] = _.empty;
+_['fantasy-land/of'] = _.of;
+_['fantasy-land/map'] = _.map;
 
 // -*- Base Parsers -*-
 
@@ -1280,7 +1280,7 @@ var index = Parsimmon(function(input, i) {
 
 var any = Parsimmon(function(input, i) {
   if (i >= input.length) {
-    return makeFailure(i, "any character/byte");
+    return makeFailure(i, 'any character/byte');
   }
   return makeSuccess(i + 1, get(input, i));
 });
@@ -1291,21 +1291,21 @@ var all = Parsimmon(function(input, i) {
 
 var eof = Parsimmon(function(input, i) {
   if (i < input.length) {
-    return makeFailure(i, "EOF");
+    return makeFailure(i, 'EOF');
   }
   return makeSuccess(i, null);
 });
 
-var digit = regexp(/[0-9]/).desc("a digit");
-var digits = regexp(/[0-9]*/).desc("optional digits");
-var letter = regexp(/[a-z]/i).desc("a letter");
-var letters = regexp(/[a-z]*/i).desc("optional letters");
-var optWhitespace = regexp(/\s*/).desc("optional whitespace");
-var whitespace = regexp(/\s+/).desc("whitespace");
-var cr = string("\r");
-var lf = string("\n");
-var crlf = string("\r\n");
-var newline = alt(crlf, lf, cr).desc("newline");
+var digit = regexp(/[0-9]/).desc('a digit');
+var digits = regexp(/[0-9]*/).desc('optional digits');
+var letter = regexp(/[a-z]/i).desc('a letter');
+var letters = regexp(/[a-z]*/i).desc('optional letters');
+var optWhitespace = regexp(/\s*/).desc('optional whitespace');
+var whitespace = regexp(/\s+/).desc('whitespace');
+var cr = string('\r');
+var lf = string('\n');
+var crlf = string('\r\n');
+var newline = alt(crlf, lf, cr).desc('newline');
 var end = alt(newline, eof);
 
 Parsimmon.all = all;
@@ -1351,8 +1351,8 @@ Parsimmon.succeed = succeed;
 Parsimmon.takeWhile = takeWhile;
 Parsimmon.test = test;
 Parsimmon.whitespace = whitespace;
-Parsimmon["fantasy-land/empty"] = empty;
-Parsimmon["fantasy-land/of"] = succeed;
+Parsimmon['fantasy-land/empty'] = empty;
+Parsimmon['fantasy-land/of'] = succeed;
 
 Parsimmon.Binary = {
   bitSeq: bitSeq,
@@ -1379,7 +1379,7 @@ Parsimmon.Binary = {
   floatBE: floatBE(),
   floatLE: floatLE(),
   doubleBE: doubleBE(),
-  doubleLE: doubleLE()
+  doubleLE: doubleLE(),
 };
 
 module.exports = Parsimmon;
