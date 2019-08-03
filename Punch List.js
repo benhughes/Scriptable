@@ -3,21 +3,18 @@
 // icon-color: deep-green; icon-glyph: magic;
 const moment = importModule('./libs/moment');
 
+
 const NOTE_ID = 'C29DC9A9-B7DF-46DA-8FD7-8AE9746CC394-11717-000007FC8F36489D';
 const overDueListName = 'Overdue';
 
-const reminders = await Reminder.allIncomplete();
 
 const priortisedList = getPrioritisedList();
-
-console.log(priortisedList)
-console.log(reminders.length)
-
 const isDueOrOverDue = (reminder) => moment(reminder.dueDate).isSameOrBefore(moment(), 'day');
 
-// console.log(reminders)
-
-const filterdReminders = reminders.filter((reminder) => reminder.notes && reminder.notes.includes('#work') && (reminder.notes.includes('#now') || isDueOrOverDue(reminder)));
+const context = await getContext();
+console.log(context);
+const reminders = await Reminder.allIncomplete();
+const filterdReminders = reminders.filter((reminder) => reminder.notes && reminder.notes.includes(context) && (reminder.notes.includes('#now') || isDueOrOverDue(reminder)));
 
 const filterdReminders2 = reminders.filter((reminder) => isDueOrOverDue(reminder))
 
@@ -89,3 +86,12 @@ function getPrioritisedList() {
   return priortisedListString.split('\n');
 }
 
+async function getContext() {
+  const contexts = ['#work', '#weekend', '#evening'];
+  let alert = new Alert();
+  alert.title = "Context?"
+  alert.message = "Are you sure you want to schedule the notification?"
+  contexts.forEach(context => alert.addAction(context))
+  const idx = await alert.presentAlert()
+  return contexts[idx];
+}
