@@ -3,42 +3,44 @@
 // icon-color: blue; icon-glyph: magic;
 const prettier = importModule('./libs/prettier');
 
-const testCode = `
-const test ='ssss';
-const ffff = 'htrfmht';
+const prettierConfig = {
+  singleQuote: true,
+  trailingComma: 'es5',
+  bracketSpacing: false,
+};
 
-const d = i => 'test'
-
-`
-
-const fm = FileManager.iCloud()
-  const docsDir = fm.documentsDirectory()  
+const fm = FileManager.iCloud();
+const docsDir = fm.documentsDirectory();
 
 async function pickScriptName() {
-  let scriptNames = getScriptNames()
-  let alert = new Alert()
-  alert.title = "Select Script"
-  alert.message = "The script can be run by force touching or long pressing on the notification."
+  let scriptNames = getScriptNames();
+  let alert = new Alert();
+  alert.title = 'Select Script';
+  alert.message =
+    'The script can be run by force touching or long pressing on the notification.';
   for (scriptName of scriptNames) {
-    alert.addAction(scriptName)
+    alert.addAction(scriptName);
   }
-  alert.addCancelAction("Cancel")
-  let idx = await alert.presentAlert()
+  alert.addCancelAction('Cancel');
+  let idx = await alert.presentAlert();
   if (idx == -1) {
-    return null
+    return null;
   } else {
-    return scriptNames[idx]
+    return scriptNames[idx];
   }
 }
 
 function getScriptNames() {
-  return fm.listContents(docsDir).filter(f => {
-    return f.endsWith(".js")
-  }).sort()
+  return fm
+    .listContents(docsDir)
+    .filter(f => {
+      return f.endsWith('.js');
+    })
+    .sort();
 }
 
 function getScriptContent(scriptName) {
-  console.log(`${docsDir}/${scriptName}`)
+  console.log(`${docsDir}/${scriptName}`);
   return fm.readString(`${docsDir}/${scriptName}`);
 }
 
@@ -51,8 +53,5 @@ if (!script) {
   return;
 }
 const scriptContent = getScriptContent(script);
-const newScriptContent = prettier(scriptContent);
-Pasteboard.copy(newScriptContent);
-overwriteScript(script, scriptContent);
- 
-// 
+const newScriptContent = prettier(scriptContent, prettierConfig);
+overwriteScript(script, newScriptContent);
