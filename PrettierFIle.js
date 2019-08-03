@@ -55,6 +55,8 @@ const scripts = await pickScriptName();
 scripts.forEach(script => {
   const scriptContent = getScriptContent(script);
   const newScriptContent = prettier(scriptContent, prettierConfig);
-  overwriteScript(script, newScriptContent);
-  console.log(`updated ${script}`);
+  if (scriptContent !== newScriptContent) {
+    overwriteScript(script, newScriptContent);
+    console.log(`updated ${script}`);
+  }
 });
