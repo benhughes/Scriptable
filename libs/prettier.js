@@ -30775,8 +30775,8 @@ var parserBabylon = createCommonjsModule(function (module, exports) {
 
 var parserBabylon$1 = unwrapExports(parserBabylon);
 
-const prettier = (code) => {
-  return prettierLib.format(code, { parser: "babylon", plugins: [parserBabylon$1] });
+const prettier = (code, config = {}) => {
+  return prettierLib.format(code, {...config, parser: "babel", plugins: [parserBabylon$1] });
 };
 
 module.exports = prettier;
