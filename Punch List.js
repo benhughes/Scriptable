@@ -88,6 +88,11 @@ url.addParameter('exclude_trashed', 'yes');
 
 await url.open();
 
+if (args.queryParameters['x-success']) {
+  Safari.open(args.queryParameters['x-success']);
+}
+Script.complete();
+
 function getPrioritisedList() {
   const files = FileManager.iCloud();
   const bookmarkedFilePath = files.bookmarkedPath('projects-prioritised');
