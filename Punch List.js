@@ -42,7 +42,7 @@ const nonPrioritisedList = Object.keys(filteredRemindersHash).filter(
 
 console.log(nonPrioritisedList);
 
-const list = [overDueListName, ...prioritisedList]
+const list = [overDueListName, ...prioritisedList, ...nonPrioritisedList]
   .filter(listName => filteredRemindersHash[listName])
   .map(list => {
     const reminders = filteredRemindersHash[list] || [];
