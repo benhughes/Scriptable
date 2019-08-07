@@ -3,6 +3,8 @@
 // icon-color: deep-green; icon-glyph: magic;
 const moment = importModule('./libs/moment');
 
+const files = FileManager.iCloud();
+
 const NOTE_ID = 'C29DC9A9-B7DF-46DA-8FD7-8AE9746CC394-11717-000007FC8F36489D';
 const overDueListName = 'Overdue';
 
@@ -42,25 +44,12 @@ const nonPrioritisedList = Object.keys(filteredRemindersHash).filter(
 
 console.log(nonPrioritisedList);
 
-const list = [overDueListName, ...prioritisedList]
+const list = [overDueListName, ...prioritisedList, ...nonPrioritisedList]
   .filter(listName => filteredRemindersHash[listName])
   .map(list => {
     const reminders = filteredRemindersHash[list] || [];
     const tasks = reminders
-      .map(({title, dueDate}) => {
-        const goodtaskLink = encodeURI(`goodtask3://task?title=${title}`);
-        const shortcutLink = encodeURI(
-          `shortcuts://run-shortcut?name=Start 25 minute focused time&input=${title}`
-        );
-        let preTask = '';
-        let postTask = '';
-        if (moment(dueDate).isSame(moment(), 'day')) {
-          preTask = '::';
-          postTask = '::';
-        }
-
-        return `- ${preTask}${title}${postTask} [Task](${goodtaskLink}) [Start timer](${shortcutLink})`;
-      })
+      .map(({title, dueDate}) => parseSingleReminder({title, dueDate}))
       .join('\n');
 
     return `## ${list}
@@ -69,15 +58,13 @@ ${tasks}
   })
   .join('\n');
 
+const highlightedTasks = getHighlightedTasks();
+
 const text = `${moment().format('dddd, MMMM Do YYYY, h:mm a')}
 
+${parseHighlightedTasks(highlightedTasks)}
 ${list}
 `;
-
-console.log(filteredRemindersHash);
-console.log(filteredReminders.length);
-console.log(filteredReminders[0]);
-console.log(text);
 
 const url = new CallbackURL('bear://x-callback-url/add-text');
 
@@ -93,11 +80,55 @@ if (args.queryParameters['x-success']) {
 }
 Script.complete();
 
+function parseSingleReminder({title, dueDate = false, isHighlighted = false}) {
+  const goodtaskLink = encodeURI(`goodtask3://task?title=${title}`);
+  const shortcutLink = encodeURI(
+    `shortcuts://run-shortcut?name=Start 25 minute focused time&input=${title}`
+  );
+  const highlightLink = encodeURI(
+    `shortcuts://run-shortcut?name=Punchlist Highlight Task&input=${title}`
+  );
+  let preTask = '';
+  let postTask = '';
+  if (dueDate && moment(dueDate).isSame(moment(), 'day')) {
+    preTask = '::';
+    postTask = '::';
+  }
+
+  const actions = [
+    `[Task](${goodtaskLink})`,
+    `[Start timer](${shortcutLink})`,
+    ...(isHighlighted ? [] : [`[Highlight](${highlightLink})`]),
+  ];
+
+  return `- ${preTask}${title}${postTask} ${actions.join(' ')}`;
+}
+
 function getPrioritisedList() {
-  const files = FileManager.iCloud();
   const bookmarkedFilePath = files.bookmarkedPath('projects-prioritised');
   const prioritisedListString = files.readString(bookmarkedFilePath);
   return prioritisedListString.split('\n');
+}
+
+function parseHighlightedTasks(highlightedTasks) {
+  const highlightLink = encodeURI(
+    `shortcuts://run-shortcut?name=Punchlist Clear Highlights`
+  );
+  const list = highlightedTasks
+    .map(text => parseSingleReminder({title: text, isHighlighted: true}))
+    .join('\n');
+  return list.length > 0
+    ? `## Highlighted
+[Clear](${highlightLink})
+${list}  
+`
+    : '';
+}
+
+function getHighlightedTasks() {
+  const bookmarkedFilePath = files.bookmarkedPath('punchlist-highlight');
+  const highlightedTaskObj = JSON.parse(files.readString(bookmarkedFilePath));
+  return highlightedTaskObj.items;
 }
 
 async function getContext() {
