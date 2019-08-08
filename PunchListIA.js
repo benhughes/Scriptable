@@ -7,13 +7,13 @@ const files = FileManager.iCloud();
 
 const NOTE_ID = 'C29DC9A9-B7DF-46DA-8FD7-8AE9746CC394-11717-000007FC8F36489D';
 const overDueListName = 'Overdue';
+const todayListName = 'Today';
 
 const prioritisedList = getPrioritisedList();
 const isDueOrOverDue = reminder =>
   moment(reminder.dueDate).isSameOrBefore(moment(), 'day');
 
 const context = await getContext();
-console.log(context);
 const reminders = await Reminder.allIncomplete();
 const filteredReminders = reminders.filter(
   reminder =>
@@ -31,7 +31,13 @@ const filteredRemindersHash = filteredReminders.reduce((obj, reminder) => {
     calendar: {title},
   } = reminder;
   const isOverDue = moment(reminder.dueDate).isBefore(moment(), 'day');
-  const name = isOverDue ? overDueListName : title;
+  const isToday = moment(reminder.dueDate).isSame(moment(), 'day');
+  let name = title;
+  if (isOverDue) {
+    name = overDueListName;
+  } else if (isToday) {
+    name = todayListName;
+  }
   return {
     ...obj,
     [name]: obj[name] ? [...obj[name], reminder] : [reminder],
@@ -39,12 +45,20 @@ const filteredRemindersHash = filteredReminders.reduce((obj, reminder) => {
 }, {});
 
 const nonPrioritisedList = Object.keys(filteredRemindersHash).filter(
-  list => !prioritisedList.includes(list) && list !== overDueListName
+  list =>
+    !prioritisedList.includes(list) &&
+    list !== overDueListName &&
+    list !== todayListName
 );
 
 console.log(nonPrioritisedList);
 
-const list = [overDueListName, ...prioritisedList, ...nonPrioritisedList]
+const list = [
+  overDueListName,
+  todayListName,
+  ...prioritisedList,
+  ...nonPrioritisedList,
+]
   .filter(listName => filteredRemindersHash[listName])
   .map(list => {
     const reminders = filteredRemindersHash[list] || [];
@@ -62,18 +76,20 @@ const highlightedTasks = getHighlightedTasks();
 
 const text = `${moment().format('dddd, MMMM Do YYYY, h:mm a')}
 
+[Update](scriptable:///run?scriptName=Punch%20List%201&x-success=iawriter://)
+
 ${parseHighlightedTasks(highlightedTasks)}
 ${list}
 `;
 
-const url = new CallbackURL('bear://x-callback-url/add-text');
+Pasteboard.copy(text);
+overwriteScript(text);
 
-url.addParameter('text', text);
-url.addParameter('id', NOTE_ID);
-url.addParameter('mode', 'replace');
-url.addParameter('exclude_trashed', 'yes');
-
-await url.open();
+function overwriteScript(newContent) {
+  const bookmarkedFilePath = files.bookmarkedPath('punchlist-work');
+  const highlightedTaskObj = files.readString(bookmarkedFilePath);
+  return files.writeString(bookmarkedFilePath, newContent);
+}
 
 if (args.queryParameters['x-success']) {
   Safari.open(args.queryParameters['x-success']);
@@ -90,10 +106,6 @@ function parseSingleReminder({title, dueDate = false, isHighlighted = false}) {
   );
   let preTask = '';
   let postTask = '';
-  if (dueDate && moment(dueDate).isSame(moment(), 'day')) {
-    preTask = '::';
-    postTask = '::';
-  }
 
   const actions = [
     `[Task](${goodtaskLink})`,
@@ -101,7 +113,7 @@ function parseSingleReminder({title, dueDate = false, isHighlighted = false}) {
     ...(isHighlighted ? [] : [`[Highlight](${highlightLink})`]),
   ];
 
-  return `- ${preTask}${title}${postTask} ${actions.join(' ')}`;
+  return `- [ ] ${preTask}${title}${postTask} ${actions.join(' ')}`;
 }
 
 function getPrioritisedList() {
@@ -120,6 +132,7 @@ function parseHighlightedTasks(highlightedTasks) {
   return list.length > 0
     ? `## Highlighted
 [Clear](${highlightLink})
+
 ${list}  
 `
     : '';
