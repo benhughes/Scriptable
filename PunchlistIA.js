@@ -35,6 +35,13 @@ const contexts = [
     highlightBookmark: 'punchlist-highlight',
     fileBookmark: 'punchlist-lunch',
   },
+  {
+    id: 'morning',
+    displayName: 'Morning',
+    tag: '#morning',
+    highlightBookmark: 'punchlist-highlight',
+    fileBookmark: 'punchlist-morning',
+  },
 ];
 
 const files = FileManager.iCloud();
@@ -142,7 +149,7 @@ function parseSingleReminder({title, dueDate = false, isHighlighted = false}) {
 
   const actions = [
     `[Task](${goodtaskLink})`,
-    `[Start timer](${shortcutLink})`,
+    `[Start Timer](${shortcutLink})`,
     ...(isHighlighted ? [] : [`[Highlight](${highlightLink})`]),
   ];
 
