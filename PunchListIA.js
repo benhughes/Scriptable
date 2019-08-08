@@ -27,14 +27,14 @@ const contexts = [
     tag: '#weekend',
     highlightBookmark: 'punchlist-highlight',
     fileBookmark: 'punchlist-weekend',
-  }, 
+  },
   {
     id: 'lunch',
     displayName: 'Lunch',
     tag: '#lunch',
     highlightBookmark: 'punchlist-highlight',
     fileBookmark: 'punchlist-lunch',
-  }, 
+  },
 ];
 
 const files = FileManager.iCloud();
@@ -102,14 +102,16 @@ ${tasks}
   const highlightedTasks = getHighlightedTasks();
 
   const text = `# ${context.displayName}
-- ${moment().format('dddd, MMMM Do YYYY, h:mm a')} [Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://)
+- ${moment().format(
+    'dddd, MMMM Do YYYY, h:mm a'
+  )} [Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://)
 
 ${parseHighlightedTasks(highlightedTasks)}
 ${list}
 `;
 
   overwriteScript(context, text);
-    console.log(`Generation complete for ${context.displayName}`);
+  console.log(`Generation complete for ${context.displayName}`);
 });
 
 if (args.queryParameters['x-success']) {
@@ -117,9 +119,9 @@ if (args.queryParameters['x-success']) {
 }
 Script.complete();
 
-function isDueOrOverDue (reminder) {
-  return   moment(reminder.dueDate).isSameOrBefore(moment(), 'day')
-  }
+function isDueOrOverDue(reminder) {
+  return moment(reminder.dueDate).isSameOrBefore(moment(), 'day');
+}
 
 function overwriteScript(context, newContent) {
   const bookmarkedFilePath = files.bookmarkedPath(context.fileBookmark);
