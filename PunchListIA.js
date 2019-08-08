@@ -8,85 +8,113 @@ const files = FileManager.iCloud();
 const NOTE_ID = 'C29DC9A9-B7DF-46DA-8FD7-8AE9746CC394-11717-000007FC8F36489D';
 const overDueListName = 'Overdue';
 const todayListName = 'Today';
+const contexts = [
+  {
+    id: 'work',
+    displayName: 'Work',
+    tag: '#work',
+    highlightBookmark: 'punchlist-highlight',
+    fileBookmark: 'punchlist-work',
+  },
+  {
+    id: 'evening',
+    displayName: 'Evening',
+    tag: '#evening',
+    highlightBookmark: 'punchlist-highlight',
+    fileBookmark: 'punchlist-evening',
+  },
+  {
+    id: 'weekend',
+    displayName: 'Weekend',
+    tag: '#weekend',
+    highlightBookmark: 'punchlist-highlight',
+    fileBookmark: 'punchlist-weekend',
+  }, 
+  {
+    id: 'lunch',
+    displayName: 'Lunch',
+    tag: '#lunch',
+    highlightBookmark: 'punchlist-highlight',
+    fileBookmark: 'punchlist-lunch',
+  }, 
+];
 
 const prioritisedList = getPrioritisedList();
 const isDueOrOverDue = reminder =>
   moment(reminder.dueDate).isSameOrBefore(moment(), 'day');
 
-const context = await getContext();
 const reminders = await Reminder.allIncomplete();
-const filteredReminders = reminders.filter(
-  reminder =>
-    reminder.notes &&
-    reminder.notes.includes(context) &&
-    (reminder.notes.includes('#now') || isDueOrOverDue(reminder))
-);
 
-const filteredReminders2 = reminders.filter(reminder =>
-  isDueOrOverDue(reminder)
-);
+contexts.forEach(context => {
+  const filteredReminders = reminders.filter(
+    reminder =>
+      reminder.notes &&
+      reminder.notes.includes(context.tag) &&
+      (reminder.notes.includes('#now') || isDueOrOverDue(reminder))
+  );
 
-const filteredRemindersHash = filteredReminders.reduce((obj, reminder) => {
-  const {
-    calendar: {title},
-  } = reminder;
-  const isOverDue = moment(reminder.dueDate).isBefore(moment(), 'day');
-  const isToday = moment(reminder.dueDate).isSame(moment(), 'day');
-  let name = title;
-  if (isOverDue) {
-    name = overDueListName;
-  } else if (isToday) {
-    name = todayListName;
-  }
-  return {
-    ...obj,
-    [name]: obj[name] ? [...obj[name], reminder] : [reminder],
-  };
-}, {});
+  const filteredReminders2 = reminders.filter(reminder =>
+    isDueOrOverDue(reminder)
+  );
 
-const nonPrioritisedList = Object.keys(filteredRemindersHash).filter(
-  list =>
-    !prioritisedList.includes(list) &&
-    list !== overDueListName &&
-    list !== todayListName
-);
+  const filteredRemindersHash = filteredReminders.reduce((obj, reminder) => {
+    const {
+      calendar: {title},
+    } = reminder;
+    const isOverDue = moment(reminder.dueDate).isBefore(moment(), 'day');
+    const isToday = moment(reminder.dueDate).isSame(moment(), 'day');
+    let name = title;
+    if (isOverDue) {
+      name = overDueListName;
+    } else if (isToday) {
+      name = todayListName;
+    }
+    return {
+      ...obj,
+      [name]: obj[name] ? [...obj[name], reminder] : [reminder],
+    };
+  }, {});
 
-console.log(nonPrioritisedList);
+  const nonPrioritisedList = Object.keys(filteredRemindersHash).filter(
+    list =>
+      !prioritisedList.includes(list) &&
+      list !== overDueListName &&
+      list !== todayListName
+  );
 
-const list = [
-  overDueListName,
-  todayListName,
-  ...prioritisedList,
-  ...nonPrioritisedList,
-]
-  .filter(listName => filteredRemindersHash[listName])
-  .map(list => {
-    const reminders = filteredRemindersHash[list] || [];
-    const tasks = reminders
-      .map(({title, dueDate}) => parseSingleReminder({title, dueDate}))
-      .join('\n');
+  const list = [
+    overDueListName,
+    todayListName,
+    ...prioritisedList,
+    ...nonPrioritisedList,
+  ]
+    .filter(listName => filteredRemindersHash[listName])
+    .map(list => {
+      const reminders = filteredRemindersHash[list] || [];
+      const tasks = reminders
+        .map(({title, dueDate}) => parseSingleReminder({title, dueDate}))
+        .join('\n');
 
-    return `## ${list}
+      return `## ${list}
 ${tasks}
   `;
-  })
-  .join('\n');
+    })
+    .join('\n');
 
-const highlightedTasks = getHighlightedTasks();
+  const highlightedTasks = getHighlightedTasks();
 
-const text = `${moment().format('dddd, MMMM Do YYYY, h:mm a')}
-
-[Update](scriptable:///run?scriptName=Punch%20List%201&x-success=iawriter://)
+  const text = `# ${context.displayName}
+- ${moment().format('dddd, MMMM Do YYYY, h:mm a')} [Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://)
 
 ${parseHighlightedTasks(highlightedTasks)}
 ${list}
 `;
 
-Pasteboard.copy(text);
-overwriteScript(text);
+  overwriteScript(context, text);
+});
 
-function overwriteScript(newContent) {
-  const bookmarkedFilePath = files.bookmarkedPath('punchlist-work');
+function overwriteScript(context, newContent) {
+  const bookmarkedFilePath = files.bookmarkedPath(context.fileBookmark);
   const highlightedTaskObj = files.readString(bookmarkedFilePath);
   return files.writeString(bookmarkedFilePath, newContent);
 }
@@ -113,7 +141,7 @@ function parseSingleReminder({title, dueDate = false, isHighlighted = false}) {
     ...(isHighlighted ? [] : [`[Highlight](${highlightLink})`]),
   ];
 
-  return `- [ ] ${preTask}${title}${postTask} ${actions.join(' ')}`;
+  return `- [ ] ${preTask}${title}${postTask} ${actions.join(' | ')}`;
 }
 
 function getPrioritisedList() {
@@ -142,14 +170,4 @@ function getHighlightedTasks() {
   const bookmarkedFilePath = files.bookmarkedPath('punchlist-highlight');
   const highlightedTaskObj = JSON.parse(files.readString(bookmarkedFilePath));
   return highlightedTaskObj.items;
-}
-
-async function getContext() {
-  const contexts = ['#work', '#weekend', '#evening'];
-  let alert = new Alert();
-  alert.title = 'Context?';
-  alert.message = 'Are you sure you want to schedule the notification?';
-  contexts.forEach(context => alert.addAction(context));
-  const idx = await alert.presentAlert();
-  return contexts[idx];
 }
