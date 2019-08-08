@@ -3,8 +3,6 @@
 // icon-color: deep-green; icon-glyph: magic;
 const moment = importModule('./libs/moment');
 
-const files = FileManager.iCloud();
-
 const NOTE_ID = 'C29DC9A9-B7DF-46DA-8FD7-8AE9746CC394-11717-000007FC8F36489D';
 const overDueListName = 'Overdue';
 const todayListName = 'Today';
@@ -39,13 +37,13 @@ const contexts = [
   }, 
 ];
 
+const files = FileManager.iCloud();
 const prioritisedList = getPrioritisedList();
-const isDueOrOverDue = reminder =>
-  moment(reminder.dueDate).isSameOrBefore(moment(), 'day');
 
 const reminders = await Reminder.allIncomplete();
 
 contexts.forEach(context => {
+  console.log(`Generating punchlist for ${context.displayName}`);
   const filteredReminders = reminders.filter(
     reminder =>
       reminder.notes &&
@@ -111,18 +109,23 @@ ${list}
 `;
 
   overwriteScript(context, text);
+    console.log(`Generation complete for ${context.displayName}`);
 });
+
+if (args.queryParameters['x-success']) {
+  Safari.open(args.queryParameters['x-success']);
+}
+Script.complete();
+
+function isDueOrOverDue (reminder) {
+  return   moment(reminder.dueDate).isSameOrBefore(moment(), 'day')
+  }
 
 function overwriteScript(context, newContent) {
   const bookmarkedFilePath = files.bookmarkedPath(context.fileBookmark);
   const highlightedTaskObj = files.readString(bookmarkedFilePath);
   return files.writeString(bookmarkedFilePath, newContent);
 }
-
-if (args.queryParameters['x-success']) {
-  Safari.open(args.queryParameters['x-success']);
-}
-Script.complete();
 
 function parseSingleReminder({title, dueDate = false, isHighlighted = false}) {
   const goodtaskLink = encodeURI(`goodtask3://task?title=${title}`);
