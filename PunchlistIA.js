@@ -44,6 +44,8 @@ const contexts = [
   },
 ];
 
+const threeDaysTime = moment().add(3, 'days');
+
 const files = FileManager.iCloud();
 const prioritisedList = getPrioritisedList();
 
@@ -51,12 +53,18 @@ const reminders = await Reminder.allIncomplete();
 
 contexts.forEach(context => {
   console.log(`Generating punchlist for ${context.displayName}`);
-  const filteredReminders = reminders.filter(
-    reminder =>
-      reminder.notes &&
-      reminder.notes.includes(context.tag) &&
-      (reminder.notes.includes('#now') || isDueOrOverDue(reminder))
-  );
+  const filteredReminders = reminders
+    .filter(
+      reminder =>
+        reminder.notes &&
+        reminder.notes.includes(context.tag) &&
+        (reminder.notes.includes('#now') || isDueOrOverDue(reminder))
+    )
+    .sort((a, b) =>
+      moment(a.dueDate || threeDaysTime).diff(
+        moment(b.dueDate || threeDaysTime)
+      )
+    );
 
   const filteredReminders2 = reminders.filter(reminder =>
     isDueOrOverDue(reminder)
@@ -109,9 +117,9 @@ ${tasks}
   const highlightedTasks = getHighlightedTasks();
 
   const text = `# ${context.displayName}
-- ${moment().format(
-    'dddd, MMMM Do YYYY, h:mm a'
-  )} [Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://)
+- ${moment().format('dddd, MMMM Do YYYY, h:mm a')} | ${
+    filteredReminders.length
+  } items | [Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://) | [Add a todo](shortcuts://run-shortcut?name=Add%20a%20Todo%20from%20IA%20Writer)
 
 ${parseHighlightedTasks(highlightedTasks)}
 ${list}
@@ -149,7 +157,7 @@ function parseSingleReminder({title, dueDate = false, isHighlighted = false}) {
 
   const actions = [
     `[Task](${goodtaskLink})`,
-    `[Start Timer](${shortcutLink})`,
+    `[Timer](${shortcutLink})`,
     ...(isHighlighted ? [] : [`[Highlight](${highlightLink})`]),
   ];
 
