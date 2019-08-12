@@ -6,6 +6,7 @@ const moment = importModule('./libs/moment');
 const NOTE_ID = 'C29DC9A9-B7DF-46DA-8FD7-8AE9746CC394-11717-000007FC8F36489D';
 const overDueListName = 'Overdue';
 const todayListName = 'Today';
+const oldListName = 'Week or more old';
 const contexts = [
   {
     id: 'work',
@@ -76,11 +77,17 @@ contexts.forEach(context => {
     } = reminder;
     const isOverDue = moment(reminder.dueDate).isBefore(moment(), 'day');
     const isToday = moment(reminder.dueDate).isSame(moment(), 'day');
+    const isOld = moment(reminder.creationDate).isBefore(
+      moment().subtract(7, 'days')
+    );
+
     let name = title;
     if (isOverDue) {
       name = overDueListName;
     } else if (isToday) {
       name = todayListName;
+    } else if (isOld) {
+      name = oldListName;
     }
     return {
       ...obj,
@@ -98,6 +105,7 @@ contexts.forEach(context => {
   const list = [
     overDueListName,
     todayListName,
+    oldListName,
     ...prioritisedList,
     ...nonPrioritisedList,
   ]
@@ -109,7 +117,9 @@ contexts.forEach(context => {
           parseSingleReminder({
             title,
             listName: calendar.title,
-            showList: list === todayListName || list === overDueListName,
+            showList: [todayListName, overDueListName, oldListName].includes(
+              list
+            ),
           })
         )
         .join('\n');
