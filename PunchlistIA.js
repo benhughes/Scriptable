@@ -105,10 +105,18 @@ contexts.forEach(context => {
     .map(list => {
       const reminders = filteredRemindersHash[list] || [];
       const tasks = reminders
-        .map(({title, dueDate}) => parseSingleReminder({title, dueDate}))
+        .map(({title, calendar}) =>
+          parseSingleReminder({
+            title,
+            listName: calendar.title,
+            showList: list === todayListName || list === overDueListName,
+          })
+        )
         .join('\n');
 
       return `## ${list}
+/project-notes/${list}.txt
+
 ${tasks}
   `;
     })
@@ -144,7 +152,13 @@ function overwriteScript(context, newContent) {
   return files.writeString(bookmarkedFilePath, newContent);
 }
 
-function parseSingleReminder({title, dueDate = false, isHighlighted = false}) {
+function parseSingleReminder({
+  title,
+  listName = '',
+  showList = false,
+  dueDate = false,
+  isHighlighted = false,
+}) {
   const goodtaskLink = encodeURI(`goodtask3://task?title=${title}`);
   const shortcutLink = encodeURI(
     `shortcuts://run-shortcut?name=Start 25 minute focused time&input=${title}`
@@ -154,6 +168,9 @@ function parseSingleReminder({title, dueDate = false, isHighlighted = false}) {
   );
   let preTask = '';
   let postTask = '';
+  if (showList) {
+    postTask += ` (${listName})`;
+  }
 
   const actions = [
     `[Task](${goodtaskLink})`,
