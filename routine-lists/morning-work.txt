@@ -1,0 +1,11 @@
+Parse yesterdays notes for tasks
+Parse Email Inbox
+Create tasks from email
+Check Slack
+view Drafts
+Parse Inbox
+Block out time for tasks
+Plan Day
+Schedule Code Review time
+Set Goals for today
+Anki Remembering tool
