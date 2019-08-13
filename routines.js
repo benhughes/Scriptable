@@ -5,20 +5,20 @@ const fm = FileManager.iCloud();
 const docsDir = fm.documentsDirectory() + '/routine-lists';
 const AUTH_TOKEN = 'JeXyZaXGsnqhbZa9DzY7';
 
-const selectedList = args.queryParameters.list || await pickListtName();
+const selectedList = args.queryParameters.list || (await pickListtName());
 
-if(!selectedList) {
+if (!selectedList) {
   return;
-  }
-
+}
 
 const completedItems = args.queryParameters.complete
   ? args.queryParameters.complete.split(',')
   : [];
 
-
-const todos = fm.readString(`${docsDir}/${selectedList}.txt`)
+const todos = fm
+  .readString(`${docsDir}/${selectedList}.txt`)
   .split('\n')
+  .filter(line => Boolean(line))
   .map((t, i) => {
     const completeParam = [...completedItems, i];
     const isCompleted = completedItems.includes(String(i));
@@ -47,7 +47,7 @@ Safari.open(url);
 console.log(todos);
 
 async function pickListtName() {
-  const listNames = getListNames().map(l => l.replace('.txt', ''))
+  const listNames = getListNames().map(l => l.replace('.txt', ''));
   let alert = new Alert();
   alert.title = 'Select list';
 
