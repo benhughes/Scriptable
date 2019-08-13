@@ -99,7 +99,8 @@ contexts.forEach(context => {
     list =>
       !prioritisedList.includes(list) &&
       list !== overDueListName &&
-      list !== todayListName
+      list !== todayListName &&
+      list !== oldListName
   );
 
   const list = [
@@ -113,9 +114,10 @@ contexts.forEach(context => {
     .map(list => {
       const reminders = filteredRemindersHash[list] || [];
       const tasks = reminders
-        .map(({title, calendar}) =>
+        .map(({title, calendar, notes}) =>
           parseSingleReminder({
             title,
+            notes,
             listName: calendar.title,
             showList: [todayListName, overDueListName, oldListName].includes(
               list
@@ -167,6 +169,7 @@ function parseSingleReminder({
   listName = '',
   showList = false,
   dueDate = false,
+  notes = '',
   isHighlighted = false,
 }) {
   const goodtaskLink = encodeURI(`goodtask3://task?title=${title}`);
@@ -176,6 +179,7 @@ function parseSingleReminder({
   const highlightLink = encodeURI(
     `shortcuts://run-shortcut?name=Punchlist Highlight Task&input=${title}`
   );
+  const url = notes.match(/(\S{1,})(:\/\/)(\S{1,})/g);
   let preTask = '';
   let postTask = '';
   if (showList) {
@@ -185,10 +189,11 @@ function parseSingleReminder({
   const actions = [
     `[Task](${goodtaskLink})`,
     `[Timer](${shortcutLink})`,
+    ...(url ? [`[Url](${url[0]})`] : []),
     ...(isHighlighted ? [] : [`[Highlight](${highlightLink})`]),
   ];
 
-  return `- [ ] ${preTask}${title}${postTask} ${actions.join(' | ')}`;
+  return `- [ ] ${preTask}${title}${postTask} [${actions.join(' | ')}]`;
 }
 
 function getPrioritisedList() {
