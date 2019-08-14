@@ -135,11 +135,17 @@ ${tasks}
     .join('\n');
 
   const highlightedTasks = getHighlightedTasks();
+  const topActions = [
+    `[Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://)`,
+    `[Add a todo](shortcuts://run-shortcut?name=${encodeURIComponent(
+      'Add a Todo from IA Writer'
+    )}&input=${encodeURIComponent(context.tag)})`,
+  ];
 
   const text = `# ${context.displayName}
 - ${moment().format('dddd, MMMM Do YYYY, h:mm a')} | ${
     filteredReminders.length
-  } items | [Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://) | [Add a todo](shortcuts://run-shortcut?name=Add%20a%20Todo%20from%20IA%20Writer&input=${encodeURIComponent(context.tag)})
+  } items | ${topActions.join(' | ')}
 
 ${parseHighlightedTasks(highlightedTasks)}
 ${list}
@@ -172,13 +178,14 @@ function parseSingleReminder({
   notes = '',
   isHighlighted = false,
 }) {
-  const goodtaskLink = encodeURIComponent(`goodtask3://task?title=${title}`);
-  const shortcutLink = encodeURIComponent(
-    `shortcuts://run-shortcut?name=Start 25 minute focused time&input=${title}`
-  );
-  const highlightLink = encodeURIComponent(
-    `shortcuts://run-shortcut?name=Punchlist Highlight Task&input=${title}`
-  );
+  const encodedTitle = encodeURIComponent(title);
+  const goodtaskLink = `goodtask3://task?title=${encodedTitle}`;
+  const shortcutLink = `shortcuts://run-shortcut?name=${encodeURIComponent(
+    'Start 25 minute focused time'
+  )}&input=${encodedTitle}`;
+  const highlightLink = `shortcuts://run-shortcut?name=${encodeURIComponent(
+    'Punchlist Highlight Task'
+  )}&input=${encodedTitle}`;
   const url = notes.match(/(\S{1,})(:\/\/)(\S{1,})/g);
   let preTask = '';
   let postTask = '';
@@ -203,9 +210,9 @@ function getPrioritisedList() {
 }
 
 function parseHighlightedTasks(highlightedTasks) {
-  const highlightLink = encodeURIComponent(
-    `shortcuts://run-shortcut?name=Punchlist Clear Highlights`
-  );
+  const highlightLink = `shortcuts://run-shortcut?name=${encodeURIComponent(
+    'Punchlist Clear Highlights'
+  )}`;
   const list = highlightedTasks
     .map(text => parseSingleReminder({title: text, isHighlighted: true}))
     .join('\n');
