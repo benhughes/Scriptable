@@ -6,10 +6,18 @@ module.exports = {
     es6: true,
     node: true,
   },
+  globals: {
+    FileManager: 'readonly',
+    Safari: 'readonly',
+    Script: 'readonly',
+    args: 'readonly',
+    importModule: 'readonly',
+  },
   extends: 'eslint:recommended',
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
+    importModule: true,
   },
   rules: {
     indent: ['error', 2],

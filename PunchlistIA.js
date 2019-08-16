@@ -3,7 +3,6 @@
 // icon-color: deep-green; icon-glyph: magic;
 const moment = importModule('./libs/moment');
 
-const NOTE_ID = 'C29DC9A9-B7DF-46DA-8FD7-8AE9746CC394-11717-000007FC8F36489D';
 const overDueListName = 'Overdue';
 const todayListName = 'Today';
 const oldListName = 'Week or more old';
@@ -73,10 +72,6 @@ contexts.forEach(context => {
     r.notes.includes(focusTag)
   );
 
-  const filteredReminders2 = reminders.filter(reminder =>
-    isDueOrOverDue(reminder)
-  );
-
   const filteredRemindersHash = filteredReminders.reduce((obj, reminder) => {
     const {
       calendar: {title},
@@ -142,7 +137,7 @@ ${tasks}
 
   const highlightedTasks = getHighlightedTasks();
   const topActions = [
-    `[Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://)`,
+    '[Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://)',
     `[Add a todo](shortcuts://run-shortcut?name=${encodeURIComponent(
       'Add a Todo from IA Writer'
     )}&input=${encodeURIComponent(context.tag)})`,
@@ -173,7 +168,6 @@ function isDueOrOverDue(reminder) {
 
 function overwriteScript(context, newContent) {
   const bookmarkedFilePath = files.bookmarkedPath(context.fileBookmark);
-  const highlightedTaskObj = files.readString(bookmarkedFilePath);
   return files.writeString(bookmarkedFilePath, newContent);
 }
 
@@ -181,7 +175,6 @@ function parseSingleReminder({
   title,
   listName = '',
   showList = false,
-  dueDate = false,
   notes = '',
   isHighlighted = false,
 }) {
@@ -194,7 +187,7 @@ function parseSingleReminder({
     'Punchlist Highlight Task'
   )}&input=${encodedTitle}`;
   const url = notes.match(/(\S{1,})(:\/\/)(\S{1,})/g);
-  let preTask = '';
+  const preTask = '';
   let postTask = '';
   if (showList) {
     postTask += ` (${listName})`;
@@ -227,7 +220,7 @@ function parseHighlightedTasks(highlightedTasks) {
     ? `## Highlighted
 [Clear](${highlightLink})
 
-${list}  
+${list}
 `
     : '';
 }
