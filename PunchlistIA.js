@@ -7,6 +7,8 @@ const NOTE_ID = 'C29DC9A9-B7DF-46DA-8FD7-8AE9746CC394-11717-000007FC8F36489D';
 const overDueListName = 'Overdue';
 const todayListName = 'Today';
 const oldListName = 'Week or more old';
+const focusTag = '#focus';
+
 const contexts = [
   {
     id: 'work',
@@ -66,6 +68,10 @@ contexts.forEach(context => {
         moment(b.dueDate || threeDaysTime)
       )
     );
+
+  const focusReminders = filteredReminders.filter(r =>
+    r.notes.includes(focusTag)
+  );
 
   const filteredReminders2 = reminders.filter(reminder =>
     isDueOrOverDue(reminder)
@@ -148,6 +154,7 @@ ${tasks}
   } items | ${topActions.join(' | ')}
 
 ${parseHighlightedTasks(highlightedTasks)}
+${parseFocusedReminders(focusReminders)}
 ${list}
 `;
 
@@ -229,4 +236,21 @@ function getHighlightedTasks() {
   const bookmarkedFilePath = files.bookmarkedPath('punchlist-highlight');
   const highlightedTaskObj = JSON.parse(files.readString(bookmarkedFilePath));
   return highlightedTaskObj.items;
+}
+
+function parseFocusedReminders(focusReminders) {
+  const focusList = focusReminders.map(({title, calendar, notes}) =>
+    parseSingleReminder({
+      title,
+      notes,
+      listName: calendar.title,
+      showList: true,
+    })
+  );
+  return focusReminders.length > 0
+    ? `## Focus
+${focusList}
+
+`
+    : '';
 }
