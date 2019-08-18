@@ -12,6 +12,11 @@ module.exports = {
     Script: 'readonly',
     args: 'readonly',
     importModule: 'readonly',
+    config: 'readonly',
+    Alert: 'readonly',
+    Request: 'readonly',
+    QuickLook: 'readonly',
+    Notification: 'readonly',
   },
   extends: 'eslint:recommended',
   parserOptions: {
