@@ -135,7 +135,6 @@ ${tasks}
     })
     .join('\n');
 
-  const highlightedTasks = getHighlightedTasks();
   const topActions = [
     '[Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://)',
     `[Add a todo](shortcuts://run-shortcut?name=${encodeURIComponent(
@@ -148,7 +147,6 @@ ${tasks}
     filteredReminders.length
   } items | ${topActions.join(' | ')}
 
-${parseHighlightedTasks(highlightedTasks)}
 ${parseFocusedReminders(focusReminders)}
 ${list}
 `;
@@ -176,7 +174,6 @@ function parseSingleReminder({
   listName = '',
   showList = false,
   notes = '',
-  isHighlighted = false,
 }) {
   const encodedTitle = encodeURIComponent(title);
   const goodtaskLink = `goodtask3://task?title=${encodedTitle}`;
@@ -194,10 +191,10 @@ function parseSingleReminder({
   }
 
   const actions = [
+    `[Details](scriptable:///run?scriptName=ReminderActions&name=${encodedTitle}&x-success=iawriter://)`,
     `[Task](${goodtaskLink})`,
     `[Timer](${shortcutLink})`,
     ...(url ? [`[Url](${url[0]})`] : []),
-    ...(isHighlighted ? [] : [`[Highlight](${highlightLink})`]),
   ];
 
   return `- [ ] ${preTask}${title}${postTask} [${actions.join(' | ')}]`;
@@ -209,37 +206,17 @@ function getPrioritisedList() {
   return prioritisedListString.split('\n');
 }
 
-function parseHighlightedTasks(highlightedTasks) {
-  const highlightLink = `shortcuts://run-shortcut?name=${encodeURIComponent(
-    'Punchlist Clear Highlights'
-  )}`;
-  const list = highlightedTasks
-    .map(text => parseSingleReminder({title: text, isHighlighted: true}))
-    .join('\n');
-  return list.length > 0
-    ? `## Highlighted
-[Clear](${highlightLink})
-
-${list}
-`
-    : '';
-}
-
-function getHighlightedTasks() {
-  const bookmarkedFilePath = files.bookmarkedPath('punchlist-highlight');
-  const highlightedTaskObj = JSON.parse(files.readString(bookmarkedFilePath));
-  return highlightedTaskObj.items;
-}
-
 function parseFocusedReminders(focusReminders) {
-  const focusList = focusReminders.map(({title, calendar, notes}) =>
-    parseSingleReminder({
-      title,
-      notes,
-      listName: calendar.title,
-      showList: true,
-    })
-  );
+  const focusList = focusReminders
+    .map(({title, calendar, notes}) =>
+      parseSingleReminder({
+        title,
+        notes,
+        listName: calendar.title,
+        showList: true,
+      })
+    )
+    .join('\n');
   return focusReminders.length > 0
     ? `## Focus
 ${focusList}
