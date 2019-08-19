@@ -88,7 +88,6 @@ async function startTimer(reminder) {
       created_with: 'scriptable',
     },
   };
-  {
 
   try {
     const req = new Request(START_TIMER_URL);
