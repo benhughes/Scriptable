@@ -14,9 +14,9 @@ const prettierConfig = {
 const fm = FileManager.iCloud();
 const docsDir = fm.documentsDirectory();
 
-let scriptNames = getScriptNames();
+const scriptNames = getScriptNames();
 
-const scripts = config.runsInApp ? await pickScriptName() : scriptNames;
+const scripts = config.runsInApp ?  await pickScriptName() : scriptNames;
 
 scripts.forEach(script => {
   const scriptContent = getScriptContent(script);
@@ -28,7 +28,7 @@ scripts.forEach(script => {
 });
 
 async function pickScriptName() {
-  let alert = new Alert();
+  const alert = new Alert();
   alert.title = 'Select Script';
   alert.message =
     'The script can be run by force touching or long pressing on the notification.';
@@ -37,7 +37,7 @@ async function pickScriptName() {
   scriptNames.forEach(scriptName => alert.addAction(scriptName));
   alert.addCancelAction('Cancel');
 
-  let idx = await alert.presentAlert();
+  const idx = await alert.presentAlert();
   if (idx == -1) {
     return [];
   } else if (idx === 0) {
