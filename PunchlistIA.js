@@ -3,7 +3,7 @@
 // icon-color: deep-green; icon-glyph: magic;
 const updatePunchlists = importModule('./updatePunchLists');
 
-await updatePunchlists()
+await updatePunchlists();
 
 if (args.queryParameters['x-success']) {
   Safari.open(args.queryParameters['x-success']);

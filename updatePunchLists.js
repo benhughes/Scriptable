@@ -53,111 +53,110 @@ const prioritisedList = getPrioritisedList();
 
 async function updatePunchlists() {
   const reminders = await Reminder.allIncomplete();
-  
+
   contexts.forEach(context => {
-  console.log(`Generating punchlist for ${context.displayName}`);
-  const filteredReminders = reminders
-    .filter(
-      reminder =>
-        reminder.notes &&
-        reminder.notes.includes(context.tag) &&
-        (reminder.notes.includes('#now') || isDueOrOverDue(reminder))
-    )
-    .sort((a, b) =>
-      moment(a.dueDate || threeDaysTime).diff(
-        moment(b.dueDate || threeDaysTime)
+    console.log(`Generating punchlist for ${context.displayName}`);
+    const filteredReminders = reminders
+      .filter(
+        reminder =>
+          reminder.notes &&
+          reminder.notes.includes(context.tag) &&
+          (reminder.notes.includes('#now') || isDueOrOverDue(reminder))
       )
-    );
-
-  const focusReminders = filteredReminders.filter(r =>
-    r.notes.includes(focusTag)
-  );
-
-  const filteredRemindersHash = filteredReminders.reduce((obj, reminder) => {
-    const {
-      calendar: {title},
-    } = reminder;
-    const isOverDue = moment(reminder.dueDate).isBefore(moment(), 'day');
-    const isToday = moment(reminder.dueDate).isSame(moment(), 'day');
-    const isOld = moment(reminder.creationDate).isBefore(
-      moment().subtract(7, 'days')
-    );
-
-    let name = title;
-    if (isOverDue) {
-      name = overDueListName;
-    } else if (isToday) {
-      name = todayListName;
-    } else if (isOld) {
-      name = oldListName;
-    }
-    return {
-      ...obj,
-      [name]: obj[name] ? [...obj[name], reminder] : [reminder],
-    };
-  }, {});
-
-  const nonPrioritisedList = Object.keys(filteredRemindersHash).filter(
-    list =>
-      !prioritisedList.includes(list) &&
-      list !== overDueListName &&
-      list !== todayListName &&
-      list !== oldListName
-  );
-
-  const list = [
-    overDueListName,
-    todayListName,
-    oldListName,
-    ...prioritisedList,
-    ...nonPrioritisedList,
-  ]
-    .filter(listName => filteredRemindersHash[listName])
-    .map(list => {
-      const reminders = filteredRemindersHash[list] || [];
-      const tasks = reminders
-        .map(({title, calendar, notes}) =>
-          parseSingleReminder({
-            title,
-            notes,
-            listName: calendar.title,
-            showList: [todayListName, overDueListName, oldListName].includes(
-              list
-            ),
-          })
+      .sort((a, b) =>
+        moment(a.dueDate || threeDaysTime).diff(
+          moment(b.dueDate || threeDaysTime)
         )
-        .join('\n');
+      );
 
-      return `## ${list}
+    const focusReminders = filteredReminders.filter(r =>
+      r.notes.includes(focusTag)
+    );
+
+    const filteredRemindersHash = filteredReminders.reduce((obj, reminder) => {
+      const {
+        calendar: {title},
+      } = reminder;
+      const isOverDue = moment(reminder.dueDate).isBefore(moment(), 'day');
+      const isToday = moment(reminder.dueDate).isSame(moment(), 'day');
+      const isOld = moment(reminder.creationDate).isBefore(
+        moment().subtract(7, 'days')
+      );
+
+      let name = title;
+      if (isOverDue) {
+        name = overDueListName;
+      } else if (isToday) {
+        name = todayListName;
+      } else if (isOld) {
+        name = oldListName;
+      }
+      return {
+        ...obj,
+        [name]: obj[name] ? [...obj[name], reminder] : [reminder],
+      };
+    }, {});
+
+    const nonPrioritisedList = Object.keys(filteredRemindersHash).filter(
+      list =>
+        !prioritisedList.includes(list) &&
+        list !== overDueListName &&
+        list !== todayListName &&
+        list !== oldListName
+    );
+
+    const list = [
+      overDueListName,
+      todayListName,
+      oldListName,
+      ...prioritisedList,
+      ...nonPrioritisedList,
+    ]
+      .filter(listName => filteredRemindersHash[listName])
+      .map(list => {
+        const reminders = filteredRemindersHash[list] || [];
+        const tasks = reminders
+          .map(({title, calendar, notes}) =>
+            parseSingleReminder({
+              title,
+              notes,
+              listName: calendar.title,
+              showList: [todayListName, overDueListName, oldListName].includes(
+                list
+              ),
+            })
+          )
+          .join('\n');
+
+        return `## ${list}
 /project-notes/${list}.txt
 
 ${tasks}
   `;
-    })
-    .join('\n');
+      })
+      .join('\n');
 
-  const topActions = [
-    '[Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://)',
-    '[Stop Timer](scriptable:///run?scriptName=ReminderActions.stopTimer&x-success=iawriter://)',
-    `[Add a todo](shortcuts://run-shortcut?name=${encodeURIComponent(
-      'Add a Todo from IA Writer'
-    )}&input=${encodeURIComponent(context.tag)})`,
-  ];
+    const topActions = [
+      '[Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://)',
+      '[Stop Timer](scriptable:///run?scriptName=ReminderActions.stopTimer&x-success=iawriter://)',
+      `[Add a todo](shortcuts://run-shortcut?name=${encodeURIComponent(
+        'Add a Todo from IA Writer'
+      )}&input=${encodeURIComponent(context.tag)})`,
+    ];
 
-  const text = `# ${context.displayName}
+    const text = `# ${context.displayName}
 - ${moment().format('dddd, MMMM Do YYYY, h:mm a')} | ${
-    filteredReminders.length
-  } items 
+      filteredReminders.length
+    } items 
 - [ ${topActions.join(' | ')} ]
 
 ${parseFocusedReminders(focusReminders)}
 ${list}
 `;
 
-  overwriteScript(context, text);
-  console.log(`Generation complete for ${context.displayName}`);
-});
-
+    overwriteScript(context, text);
+    console.log(`Generation complete for ${context.displayName}`);
+  });
 }
 
 function isDueOrOverDue(reminder) {
@@ -223,6 +222,5 @@ ${focusList}
 `
     : '';
 }
-
 
 module.exports = updatePunchlists;

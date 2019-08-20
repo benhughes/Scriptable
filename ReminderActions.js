@@ -208,7 +208,7 @@ async function scheduleNotification(reminder, timerId) {
 
 async function focusReminder(reminder) {
   if (reminder.notes.includes(FOCUS_TAG + '')) {
-    reminder.notes=  reminder.notes.replace(FOCUS_TAG + ' ', '');
+    reminder.notes = reminder.notes.replace(FOCUS_TAG + ' ', '');
   } else {
     reminder.notes = FOCUS_TAG + ' ' + reminder.notes;
   }
