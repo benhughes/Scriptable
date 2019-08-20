@@ -26,6 +26,11 @@ const reminders = await Reminder.allIncomplete();
 
 await displayReminder();
 
+if (args.queryParameters['x-success']) {
+  Safari.open(args.queryParameters['x-success']);
+}
+Script.complete();
+
 async function displayReminder() {
   const foundReminder = reminders.find(r => r.title === reminderName);
   if (!foundReminder) {
@@ -100,7 +105,7 @@ async function startTimer(reminder) {
 
     const startResult = await req.loadJSON();
 
-    scheduleNotification(reminder, startResult.data.id);    
+    scheduleNotification(reminder, startResult.data.id);
   } catch (e) {
     QuickLook.present('Something has gone wrong. \n\n' + e);
     return;
@@ -113,13 +118,17 @@ async function removeNotificationsCreatedByScript(notificationsList) {
   );
 
   for (let i = 0; i < notificationsCreatedByScript.length; i++) {
-    console.log(notificationsCreatedByScript[i]);
     await notificationsCreatedByScript[i].remove();
   }
 }
 
 async function scheduleNotification(reminder, timerId) {
   console.log('scheduling notification');
+  const userInfo = {
+    createdBy: NOTIFICATION_CREATED_BY_NAME,
+    reminderId: reminder.id,
+    timerId,
+  };
   const allPending = await Notification.allPending();
   const allDelivered = await Notification.allDelivered();
   console.log('All Pending');
@@ -130,22 +139,35 @@ async function scheduleNotification(reminder, timerId) {
 
   const startNotification = new Notification();
   startNotification.body = `Started timer for: ${reminder.title}`;
-  startNotification.userInfo = {createdBy: NOTIFICATION_CREATED_BY_NAME};
+  startNotification.userInfo = userInfo;
   startNotification.addAction(
     'Start it again?',
     'scriptable:///run?scriptName=ReminderActions',
     false
   );
+
+  startNotification.addAction(
+    'Stop',
+    'scriptable:///run?scriptName=ReminderActions.stopTimer',
+    false
+  );
+
   await startNotification.schedule();
 
   const notification = new Notification();
   notification.body = `Are you still working on task: ${reminder.title}?`;
-  notification.userInfo = {createdBy: NOTIFICATION_CREATED_BY_NAME, reminderId: reminder.id, timerId};
+  notification.userInfo = userInfo;
   notification.addAction(
     'Start it again?',
     'scriptable:///run?scriptName=ReminderActions',
     false
   );
+  startNotification.addAction(
+    'Stop',
+    'scriptable:///run?scriptName=ReminderActions.stopTimer',
+    false
+  );
+
   const triggerDate = moment().add(INTERVALS, 'minutes');
   notification.setTriggerDate(triggerDate.toDate());
   await notification.schedule();

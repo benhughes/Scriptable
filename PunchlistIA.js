@@ -137,6 +137,7 @@ ${tasks}
 
   const topActions = [
     '[Update](scriptable:///run?scriptName=PunchlistIA&x-success=iawriter://)',
+    '[Stop Timer](scriptable:///run?scriptName=ReminderActions.stopTimer&x-success=iawriter://)',
     `[Add a todo](shortcuts://run-shortcut?name=${encodeURIComponent(
       'Add a Todo from IA Writer'
     )}&input=${encodeURIComponent(context.tag)})`,
@@ -145,7 +146,8 @@ ${tasks}
   const text = `# ${context.displayName}
 - ${moment().format('dddd, MMMM Do YYYY, h:mm a')} | ${
     filteredReminders.length
-  } items | ${topActions.join(' | ')}
+  } items 
+- [ ${topActions.join(' | ')} ]
 
 ${parseFocusedReminders(focusReminders)}
 ${list}
@@ -217,7 +219,7 @@ function parseFocusedReminders(focusReminders) {
       })
     )
     .join('\n');
-    
+
   return focusReminders.length > 0
     ? `## Focus
 ${focusList}
