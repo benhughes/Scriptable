@@ -10,6 +10,7 @@ const {
   AUTH_DETAILS,
   requestProjects,
 } = importModule('./ReminderActions.common');
+const updatePunchlists = importModule('./updatePunchLists');
 
 const INTERVALS = 25;
 const FOCUS_TAG = '#focus';
@@ -21,7 +22,7 @@ const actions = [
   },
   {
     displayName: 'Toggle focus',
-    actions: [focusReminder],
+    actions: [focusReminder, updatePunchlists],
   },
   {
     displayName: 'Show in goodtasks',
@@ -54,6 +55,8 @@ while (true) {
     break;
   }
 }
+
+await updatePunchlists();
 
 if (args.queryParameters['x-success']) {
   Safari.open(args.queryParameters['x-success']);
