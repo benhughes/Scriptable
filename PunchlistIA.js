@@ -194,8 +194,6 @@ function parseSingleReminder({
 
   const actions = [
     `[Details](scriptable:///run?scriptName=ReminderActions&name=${encodedTitle}&x-success=iawriter://)`,
-    `[Task](${goodtaskLink})`,
-    `[Timer](${shortcutLink})`,
     ...(url ? [`[Url](${url[0]})`] : []),
   ];
 
