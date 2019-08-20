@@ -41,6 +41,10 @@ async function requestStopTimer(id) {
   return await requestToggleData(getStopUrl(id), {method: 'PUT'});
 }
 
+async function requestProjects(id) {
+  return await requestToggleData(GET_PROJECTS_URL);
+}
+
 module.exports = {
   TIME_ENTRIES_URL,
   START_TIMER_URL,
@@ -50,4 +54,5 @@ module.exports = {
 
   requestCurrentTimer,
   requestStopTimer,
+  requestProjects,
 };

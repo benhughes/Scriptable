@@ -8,36 +8,78 @@ const {
   GET_PROJECTS_URL,
   NOTIFICATION_CREATED_BY_NAME,
   AUTH_DETAILS,
+  requestProjects,
 } = importModule('./ReminderActions.common');
 
 const INTERVALS = 25;
+const FOCUS_TAG = '#focus';
 
 const actions = [
   {
     displayName: 'start new timer?',
-    actions: [startTimer, scheduleNotification],
+    actions: [startTimer],
+  },
+  {
+    displayName: 'Toggle focus',
+    actions: [focusReminder],
+  },
+  {
+    displayName: 'Show in goodtasks',
+    actions: [showInGoodtasks],
+  },
+  {
+    displayName: 'Open URL',
+    visible: hasURL,
+    actions: [openURL],
   },
 ];
 
 const reminderName =
-  args.queryParameters.name || 'Clear your Whatsapp messages for the day';
+  args.queryParameters.name || 'Buy a Autumn/Winter New Jacket';
 
 const reminders = await Reminder.allIncomplete();
 
-await displayReminder();
+const foundReminder = reminders.find(r => r.title === reminderName);
+
+const filteredActions = actions.filter(a =>
+  typeof a.visible === 'function' ? a.visible(foundReminder) : true
+);
+
+while (true) {
+  const selectedIndex = await displayReminder(foundReminder, filteredActions);
+
+  if (selectedIndex >= 0) {
+    await handleAction(actions[selectedIndex], foundReminder);
+  } else {
+    break;
+  }
+}
 
 if (args.queryParameters['x-success']) {
   Safari.open(args.queryParameters['x-success']);
 }
 Script.complete();
 
-async function displayReminder() {
-  const foundReminder = reminders.find(r => r.title === reminderName);
+function getURL(text) {
+  return text.match(/(\S{1,})(:\/\/)(\S{1,})/g);
+}
+
+function getURLsFromReminder(reminder) {
+  const notesURLs = getURL(reminder.notes) || [];
+  const titleURLs = getURL(reminder.title) || [];
+  return [...notesURLs, ...titleURLs];
+}
+
+function hasURL(reminder) {
+  return getURLsFromReminder(reminder).length > 0;
+}
+
+async function displayReminder(foundReminder, actions) {
   if (!foundReminder) {
     const notFoundAlert = new Alert();
     notFoundAlert.title = `${reminderName} Not found`;
     await notFoundAlert.presentAlert();
-    return;
+    return -1;
   }
 
   const alert = new Alert();
@@ -45,46 +87,34 @@ async function displayReminder() {
   alert.message = `
 Project: ${foundReminder.calendar.title}
 notes: ${foundReminder.notes}
-
 `;
 
   actions.forEach(action => alert.addAction(action.displayName));
 
   alert.addCancelAction('Cancel');
 
-  const selectedIndex = await alert.presentAlert();
+  return await alert.presentAlert();
+}
 
-  if (selectedIndex >= 0) {
-    for (let i = 0; i < actions[selectedIndex].actions.length; i++) {
-      await actions[selectedIndex].actions[i](foundReminder);
-    }
+async function handleAction(action, foundReminder) {
+  for (let i = 0; i < action.actions.length; i++) {
+    await action.actions[i](foundReminder);
   }
 }
 
 async function getProjects() {
-  try {
-    const req = new Request(GET_PROJECTS_URL);
-    req.headers = {
-      Authorization: `Basic ${AUTH_DETAILS}`,
-    };
-
-    const startResult = await req.loadJSON();
-    return startResult.data.projects.reduce(
-      (projects, project) => ({
-        ...projects,
-        [project.name]: project.id,
-      }),
-      {}
-    );
-  } catch (e) {
-    QuickLook.present('Something has gone wrong. \n\n' + e);
-    return;
-  }
+  const startResult = await requestProjects();
+  return startResult.data.projects.reduce(
+    (projects, project) => ({
+      ...projects,
+      [project.name]: project.id,
+    }),
+    {}
+  );
 }
 
 async function startTimer(reminder) {
   const projects = await getProjects();
-  console.log(projects);
   const pid = projects[reminder.calendar.title];
   const body = {
     time_entry: {
@@ -171,4 +201,33 @@ async function scheduleNotification(reminder, timerId) {
   const triggerDate = moment().add(INTERVALS, 'minutes');
   notification.setTriggerDate(triggerDate.toDate());
   await notification.schedule();
+}
+
+async function focusReminder(reminder) {
+  if (reminder.notes.includes(FOCUS_TAG)) {
+    reminder.notes.replace(FOCUS_TAG + ' ', '');
+  } else {
+    reminder.notes = FOCUS_TAG + ' ' + reminder.notes;
+  }
+  reminder.save();
+}
+
+async function showInGoodtasks(reminder) {
+  const encodedTitle = encodeURIComponent(reminder.title);
+  const goodtaskLink = `goodtask3://task?title=${encodedTitle}`;
+  Safari.open(goodtaskLink);
+}
+
+async function openURL(reminder) {
+  const URLsToOpen = getURL(reminder.notes) || getURL(reminder.title);
+  if (URLsToOpen.length > 1) {
+    const alert = new Alert();
+    alert.title = 'Which URL shall we open';
+
+    URLsToOpen.forEach(url => alert.addAction(url));
+    const chosenIndex = await alert.presentAlert();
+    Safari.open(URLsToOpen[chosenIndex]);
+  } else {
+    Safari.open(URLsToOpen[0]);
+  }
 }
