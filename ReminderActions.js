@@ -18,7 +18,7 @@ const FOCUS_TAG = '#focus';
 const actions = [
   {
     displayName: 'start new timer?',
-    actions: [startTimer],
+    actions: [startTimer, openPostTimerShortcut],
   },
   {
     displayName: 'Toggle focus',
@@ -233,4 +233,10 @@ async function openURL(reminder) {
   } else {
     Safari.open(URLsToOpen[0]);
   }
+}
+
+async function openPostTimerShortcut() {
+  const callback = new CallbackURL('shortcuts://run-shortcut');
+  callback.addParameter('name', 'Post Timer');
+  await callback.open();
 }
