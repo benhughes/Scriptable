@@ -25,6 +25,11 @@ const actions = [
     actions: [focusReminder, updatePunchlists],
   },
   {
+    displayName: reminder =>
+      reminder.isCompleted ? 'Make Active' : 'Complete Task',
+    actions: [toggleCompleteTask, updatePunchlists],
+  },
+  {
     displayName: 'Show in goodtasks',
     actions: [showInGoodtasks],
   },
@@ -64,7 +69,7 @@ if (args.queryParameters['x-success']) {
 Script.complete();
 
 function getURL(text) {
-  return text.match(/(\S{1,})(:\/\/)(\S{1,})/g);
+  return text && text.match(/(\S{1,})(:\/\/)(\S{1,})/g);
 }
 
 function getURLsFromReminder(reminder) {
@@ -92,7 +97,13 @@ Project: ${foundReminder.calendar.title}
 notes: ${foundReminder.notes}
 `;
 
-  actions.forEach(action => alert.addAction(action.displayName));
+  actions.forEach(action =>
+    alert.addAction(
+      typeof action.displayName === 'function'
+        ? action.displayName(foundReminder)
+        : action.displayName
+    )
+  );
 
   alert.addCancelAction('Cancel');
 
@@ -187,23 +198,23 @@ async function scheduleNotification(reminder, timerId) {
 
   await startNotification.schedule();
 
-  const notification = new Notification();
-  notification.body = `Are you still working on task: ${reminder.title}?`;
-  notification.userInfo = userInfo;
-  notification.addAction(
+  const delayedNotification = new Notification();
+  delayedNotification.body = `Are you still working on task: ${reminder.title}?`;
+  delayedNotification.userInfo = userInfo;
+  delayedNotification.addAction(
     'Start it again?',
     'scriptable:///run?scriptName=ReminderActions',
     false
   );
-  startNotification.addAction(
+  delayedNotification.addAction(
     'Stop',
     'scriptable:///run?scriptName=ReminderActions.stopTimer',
     false
   );
 
   const triggerDate = moment().add(INTERVALS, 'minutes');
-  notification.setTriggerDate(triggerDate.toDate());
-  await notification.schedule();
+  delayedNotification.setTriggerDate(triggerDate.toDate());
+  await delayedNotification.schedule();
 }
 
 async function focusReminder(reminder) {
@@ -239,4 +250,9 @@ async function openPostTimerShortcut() {
   const callback = new CallbackURL('shortcuts://run-shortcut');
   callback.addParameter('name', 'Post Timer');
   await callback.open();
+}
+
+async function toggleCompleteTask(reminder) {
+  reminder.isCompleted = !reminder.isCompleted;
+  reminder.save();
 }
