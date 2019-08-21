@@ -1,4 +1,5 @@
 Check emails
+Check Slack
 Check today list
 Mark off everything done today in reminders
 Parse timers
