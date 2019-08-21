@@ -37,6 +37,7 @@ const actions = [
     displayName: 'Open URL',
     visible: hasURL,
     actions: [openURL],
+    exitOnCompletion: true,
   },
 ];
 
@@ -56,6 +57,9 @@ while (true) {
 
   if (selectedIndex >= 0) {
     await handleAction(actions[selectedIndex], foundReminder);
+    if (actions[selectedIndex].exitOnCompletion) {
+      break;
+    }
   } else {
     break;
   }
@@ -105,7 +109,7 @@ notes: ${foundReminder.notes}
     )
   );
 
-  alert.addCancelAction('Cancel');
+  alert.addCancelAction('All done');
 
   return await alert.presentAlert();
 }
