@@ -56,6 +56,12 @@ async function updatePunchlists() {
 
   contexts.forEach(context => {
     console.log(`Generating punchlist for ${context.displayName}`);
+    overwriteScript(context, generatePunchlistMarkdown(context, reminders));
+    console.log(`Generation complete for ${context.displayName}`);
+  });
+}
+
+function generatePunchlistMarkdown (context, reminders) {
     const filteredReminders = reminders
       .filter(
         reminder =>
@@ -144,7 +150,7 @@ ${tasks}
       )}&input=${encodeURIComponent(context.tag)})`,
     ];
 
-    const text = `# ${context.displayName}
+    return `# ${context.displayName}
 - ${moment().format('dddd, MMMM Do YYYY, h:mm a')} | ${
       filteredReminders.length
     } items 
@@ -154,9 +160,7 @@ ${parseFocusedReminders(focusReminders)}
 ${list}
 `;
 
-    overwriteScript(context, text);
-    console.log(`Generation complete for ${context.displayName}`);
-  });
+
 }
 
 function isDueOrOverDue(reminder) {
@@ -190,7 +194,7 @@ function parseSingleReminder({
   }
 
   const actions = [
-    `[Details](scriptable:///run?scriptName=ReminderActions&name=${encodedTitle}&x-success=iawriter://)`,
+    `[Actions](scriptable:///run?scriptName=ReminderActions&name=${encodedTitle}&x-success=iawriter://)`,
     ...(url ? [`[Url](${url[0]})`] : []),
   ];
 
@@ -223,4 +227,8 @@ ${focusList}
     : '';
 }
 
-module.exports = updatePunchlists;
+module.exports = {
+  updatePunchlists,
+  generatePunchlistMarkdown
+};
+  

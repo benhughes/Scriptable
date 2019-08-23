@@ -10,7 +10,7 @@ const {
   AUTH_DETAILS,
   requestProjects,
 } = importModule('./ReminderActions.common');
-const updatePunchlists = importModule('./updatePunchLists');
+const {updatePunchlists} = importModule('./updatePunchLists');
 
 const INTERVALS = 25;
 const FOCUS_TAG = '#focus';
@@ -109,7 +109,7 @@ notes: ${foundReminder.notes}
     )
   );
 
-  alert.addCancelAction('All done');
+  alert.addCancelAction('Back');
 
   return await alert.presentAlert();
 }
