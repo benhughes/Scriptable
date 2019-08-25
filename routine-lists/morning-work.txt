@@ -3,6 +3,7 @@ Parse Email Inbox
 Create tasks from email
 Check Slack
 view Drafts
+Review Knowledge doc
 Parse Inbox
 Block out time for tasks
 Plan Day
