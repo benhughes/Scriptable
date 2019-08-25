@@ -177,13 +177,6 @@ function parseSingleReminder({
   notes = '',
 }) {
   const encodedTitle = encodeURIComponent(title);
-  const goodtaskLink = `goodtask3://task?title=${encodedTitle}`;
-  const shortcutLink = `shortcuts://run-shortcut?name=${encodeURIComponent(
-    'Start 25 minute focused time'
-  )}&input=${encodedTitle}`;
-  const highlightLink = `shortcuts://run-shortcut?name=${encodeURIComponent(
-    'Punchlist Highlight Task'
-  )}&input=${encodedTitle}`;
   const url = notes.match(/(\S{1,})(:\/\/)(\S{1,})/g);
   const preTask = '';
   let postTask = '';
