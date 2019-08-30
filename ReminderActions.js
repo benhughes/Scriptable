@@ -193,7 +193,9 @@ async function scheduleNotification(reminder, timerId) {
   startNotification.userInfo = userInfo;
   startNotification.addAction(
     'Start it again?',
-    `scriptable:///run?scriptName=ReminderActions&name=${encodeURIComponent(reminder.title)}`,
+    `scriptable:///run?scriptName=ReminderActions&name=${encodeURIComponent(
+      reminder.title
+    )}`,
     false
   );
 

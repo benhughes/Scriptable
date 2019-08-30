@@ -168,4 +168,4 @@ function parseSingleReminder({
 
 module.exports = {
   updateBurnerLists,
-}
+};
