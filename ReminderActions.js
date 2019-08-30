@@ -11,6 +11,7 @@ const {
   requestProjects,
 } = importModule('./ReminderActions.common');
 const {updatePunchlists} = importModule('./updatePunchLists');
+const {updateBurnerLists} = importModule('./updateBurnerLists');
 
 const INTERVALS = 25;
 const FOCUS_TAG = '#focus';
@@ -27,7 +28,7 @@ const actions = [
   {
     displayName: reminder =>
       reminder.isCompleted ? 'Make Active' : 'Complete Task',
-    actions: [toggleCompleteTask, updatePunchlists],
+    actions: [toggleCompleteTask, updatePunchlists, updateBurnerLists],
   },
   {
     displayName: 'Show in goodtasks',
@@ -66,6 +67,7 @@ while (true) {
 }
 
 await updatePunchlists();
+await updateBurnerLists();
 
 if (args.queryParameters['x-success']) {
   Safari.open(args.queryParameters['x-success']);
@@ -98,7 +100,8 @@ async function displayReminder(foundReminder, actions) {
   alert.title = foundReminder.title;
   alert.message = `
 Project: ${foundReminder.calendar.title}
-notes: ${foundReminder.notes}
+Notes: ${foundReminder.notes}
+Due: ${foundReminder.dueDate ? moment(foundReminder.dueDate).fromNow() : 'N/A'}
 `;
 
   actions.forEach(action =>
@@ -190,7 +193,7 @@ async function scheduleNotification(reminder, timerId) {
   startNotification.userInfo = userInfo;
   startNotification.addAction(
     'Start it again?',
-    'scriptable:///run?scriptName=ReminderActions',
+    `scriptable:///run?scriptName=ReminderActions&name=${encodeURIComponent(reminder.title)}`,
     false
   );
 
@@ -232,7 +235,7 @@ async function focusReminder(reminder) {
 
 async function showInGoodtasks(reminder) {
   const encodedTitle = encodeURIComponent(reminder.title);
-  const goodtaskLink = `goodtask3://task?title=${encodedTitle}`;
+  const goodtaskLink = `goodtask3://task?name=${encodedTitle}`;
   Safari.open(goodtaskLink);
 }
 
