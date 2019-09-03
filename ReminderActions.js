@@ -42,10 +42,11 @@ const actions = [
     exitOnCompletion: true,
   },
   {
-    displayName: (reminder) => reminder.notes.includes(NOTE_ID) ? 'Open Note' : 'Create Note',
+    displayName: reminder =>
+      reminder.notes.includes(NOTE_ID) ? 'Open Note' : 'Create Note',
     actions: [createNote],
     exitOnCompletion: true,
-    }
+  },
 ];
 
 const reminderName =
@@ -234,7 +235,9 @@ async function scheduleNotification(reminder, timerId) {
 
 async function focusReminder(reminder) {
   if (reminder.notes.includes(FOCUS_TAG + '')) {
-    reminder.notes = reminder.notes.replace(FOCUS_TAG + ' ', '').replace(FOCUS_TAG, "");
+    reminder.notes = reminder.notes
+      .replace(FOCUS_TAG + ' ', '')
+      .replace(FOCUS_TAG, '');
   } else {
     reminder.notes = FOCUS_TAG + ' ' + reminder.notes;
   }
@@ -277,11 +280,12 @@ async function createNote(reminder) {
     const id = reminder.notes.split(NOTE_ID + ':')[1].split('\n')[0];
     Safari.open('bear://x-callback-url/open-note?id=' + id);
   } else {
-    const callback = new CallbackURL('bear://x-callback-url/create')
-    callback.addParameter('text', '#tasks/notes\n\n')
-    callback.addParameter('title', 'Task: ' + reminder.title)
+    const callback = new CallbackURL('bear://x-callback-url/create');
+    callback.addParameter('text', '#tasks/notes\n\n');
+    callback.addParameter('title', 'Task: ' + reminder.title);
     const response = await callback.open();
-    reminder.notes = NOTE_ID + ':' + response.identifier + '\n' + reminder.notes
-    reminder.save()  
+    reminder.notes =
+      NOTE_ID + ':' + response.identifier + '\n' + reminder.notes;
+    reminder.save();
   }
 }
