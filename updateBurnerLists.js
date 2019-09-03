@@ -45,6 +45,9 @@ async function updateBurnerLists() {
 }
 
 function parseTaskList(list, showList = false) {
+  if (!list || list.length === 0) {
+    return ['No items found'];
+  }
   return list.map(reminder =>
     parseSingleReminder({
       reminder,

@@ -1,12 +1,13 @@
 Parse yesterdays notes for tasks
-Parse Email Inbox
-Create tasks from email
+Check VIP email box
 Check Slack
 view Drafts
 Review Knowledge doc
 Parse Inbox
 Block out time for tasks
-Plan Day
-Schedule Code Review time
-Set Goals for today
-Anki Remembering tool
+:Plan Day
+Schedule 30 minutes Code Review time
+Schedule 30-60 Small tasks time
+Schedule deep work block time
+
+Set today’s highlight 

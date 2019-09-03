@@ -16,7 +16,10 @@ const docsDir = fm.documentsDirectory();
 
 const scriptNames = getScriptNames();
 
-const scripts = config.runsInApp ? await pickScriptName() : scriptNames;
+// change to true if you would like to pick the file first
+const askForScriptName = false;
+
+const scripts = askForScriptName ? await pickScriptName() : scriptNames;
 
 scripts.forEach(script => {
   const scriptContent = getScriptContent(script);

@@ -15,6 +15,7 @@ const {updateBurnerLists} = importModule('./updateBurnerLists');
 
 const INTERVALS = 25;
 const FOCUS_TAG = '#focus';
+const NOTE_ID = 'note-id';
 
 const actions = [
   {
@@ -40,6 +41,11 @@ const actions = [
     actions: [openURL],
     exitOnCompletion: true,
   },
+  {
+    displayName: (reminder) => reminder.notes.includes(NOTE_ID) ? 'Open Note' : 'Create Note',
+    actions: [createNote],
+    exitOnCompletion: true,
+    }
 ];
 
 const reminderName =
@@ -57,8 +63,8 @@ while (true) {
   const selectedIndex = await displayReminder(foundReminder, filteredActions);
 
   if (selectedIndex >= 0) {
-    await handleAction(actions[selectedIndex], foundReminder);
-    if (actions[selectedIndex].exitOnCompletion) {
+    await handleAction(filteredActions[selectedIndex], foundReminder);
+    if (filteredActions[selectedIndex].exitOnCompletion) {
       break;
     }
   } else {
@@ -228,7 +234,7 @@ async function scheduleNotification(reminder, timerId) {
 
 async function focusReminder(reminder) {
   if (reminder.notes.includes(FOCUS_TAG + '')) {
-    reminder.notes = reminder.notes.replace(FOCUS_TAG + ' ', '');
+    reminder.notes = reminder.notes.replace(FOCUS_TAG + ' ', '').replace(FOCUS_TAG, "");
   } else {
     reminder.notes = FOCUS_TAG + ' ' + reminder.notes;
   }
@@ -243,7 +249,7 @@ async function showInGoodtasks(reminder) {
 
 async function openURL(reminder) {
   const URLsToOpen = getURL(reminder.notes) || getURL(reminder.title);
-  if (URLsToOpen.length > 1) {
+  if (URLsToOpen && URLsToOpen.length > 1) {
     const alert = new Alert();
     alert.title = 'Which URL shall we open';
 
@@ -264,4 +270,18 @@ async function openPostTimerShortcut() {
 async function toggleCompleteTask(reminder) {
   reminder.isCompleted = !reminder.isCompleted;
   reminder.save();
+}
+
+async function createNote(reminder) {
+  if (reminder.notes.includes(NOTE_ID)) {
+    const id = reminder.notes.split(NOTE_ID + ':')[1].split('\n')[0];
+    Safari.open('bear://x-callback-url/open-note?id=' + id);
+  } else {
+    const callback = new CallbackURL('bear://x-callback-url/create')
+    callback.addParameter('text', '#tasks/notes\n\n')
+    callback.addParameter('title', 'Task: ' + reminder.title)
+    const response = await callback.open();
+    reminder.notes = NOTE_ID + ':' + response.identifier + '\n' + reminder.notes
+    reminder.save()  
+  }
 }
