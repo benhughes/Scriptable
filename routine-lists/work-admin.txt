@@ -1,5 +1,0 @@
-Parse Email Inbox
-Create tasks from email
-Anki 
-
-

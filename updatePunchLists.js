@@ -17,6 +17,22 @@ const contexts = [
     fileBookmark: 'punchlist-work',
   },
   {
+    id: 'work-deep',
+    displayName: 'Deep Work',
+    tag: '#work',
+    secondaryTags: ['#type-deep'],
+    highlightBookmark: 'punchlist-highlight',
+    fileBookmark: 'punchlist-work-deep',
+  },
+  {
+    id: 'work-small',
+    displayName: 'Work Small Tasks',
+    tag: '#work',
+    secondaryTags: ['#type-small'],
+    highlightBookmark: 'punchlist-highlight',
+    fileBookmark: 'punchlist-work-small',
+  },
+  {
     id: 'evening',
     displayName: 'Evening',
     tag: '#evening',
@@ -61,12 +77,16 @@ async function updatePunchlists() {
   });
 }
 
+await updatePunchlists();
+
 function generatePunchlistMarkdown(context, reminders) {
   const filteredReminders = reminders
     .filter(
       reminder =>
         reminder.notes &&
-        reminder.notes.includes(context.tag) &&
+        ![context.tag, ...(context.secondaryTags || [])].some(
+          tag => !reminder.notes.includes(tag)
+        ) &&
         (reminder.notes.includes('#now') || isDueOrOverDue(reminder))
     )
     .sort((a, b) =>
