@@ -43,7 +43,16 @@ const url = `ia-writer://write?path=/punchlist/routines/${selectedList}.txt&mode
   fileText
 )}`;
 
-Safari.open(url);
+const filePath = `/punchlist/routines/${selectedList}.txt`;
+const callBack = new CallbackURL('ia-writer://write');
+callBack.addParameter('path', filePath);
+callBack.addParameter('mode', 'replace');
+callBack.addParameter('auth-token', AUTH_TOKEN);
+callBack.addParameter('text', fileText);
+
+await callBack.open();
+
+// Safari.open(url);
 console.log(todos);
 
 async function pickListtName() {

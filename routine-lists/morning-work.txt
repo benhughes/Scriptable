@@ -9,5 +9,6 @@ Block out time for tasks
 Schedule 30 minutes Code Review time
 Schedule 30-60 Small tasks time
 Schedule deep work block time
+Add to calendar
 
 Set today’s highlight 

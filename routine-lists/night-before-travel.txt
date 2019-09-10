@@ -1,5 +1,7 @@
 Pack
 Water Plants
 Check Electricity
+Charge suitcase charger
+Charge normal charger
 Trim Beard
 Take out bins
