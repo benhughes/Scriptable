@@ -1,6 +1,8 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
 // icon-color: light-brown; icon-glyph: magic;
+const {getProjectSettings} = importModule('./ProjectSettings');
+
 const moment = importModule('./libs/moment');
 
 const overDueListName = 'Overdue';
@@ -25,12 +27,12 @@ const contexts = [
     fileBookmark: 'punchlist-work-deep',
   },
   {
-    id: 'work-small',
-    displayName: 'Work Small Tasks',
+    id: 'work-shallow',
+    displayName: 'Work Shallow Tasks',
     tag: '#work',
-    secondaryTags: ['#type-small'],
+    secondaryTags: ['#type-shallow'],
     highlightBookmark: 'punchlist-highlight',
-    fileBookmark: 'punchlist-work-small',
+    fileBookmark: 'punchlist-work-shallow',
   },
   {
     id: 'evening',
@@ -65,21 +67,25 @@ const contexts = [
 const threeDaysTime = moment().add(3, 'days');
 
 const files = FileManager.iCloud();
-const prioritisedList = getPrioritisedList();
 
 async function updatePunchlists() {
   const reminders = await Reminder.allIncomplete();
+  const projectSettings = await getProjectSettings();
 
   contexts.forEach(context => {
     console.log(`Generating punchlist for ${context.displayName}`);
-    overwriteScript(context, generatePunchlistMarkdown(context, reminders));
+
+    overwriteScript(
+      context,
+      generatePunchlistMarkdown(context, reminders, projectSettings)
+    );
     console.log(`Generation complete for ${context.displayName}`);
   });
 }
 
 await updatePunchlists();
 
-function generatePunchlistMarkdown(context, reminders) {
+function generatePunchlistMarkdown(context, reminders, projectSettings) {
   const filteredReminders = reminders
     .filter(
       reminder =>
@@ -105,17 +111,12 @@ function generatePunchlistMarkdown(context, reminders) {
     } = reminder;
     const isOverDue = moment(reminder.dueDate).isBefore(moment(), 'day');
     const isToday = moment(reminder.dueDate).isSame(moment(), 'day');
-    const isOld = moment(reminder.creationDate).isBefore(
-      moment().subtract(7, 'days')
-    );
 
     let name = title;
     if (isOverDue) {
       name = overDueListName;
     } else if (isToday) {
       name = todayListName;
-    } else if (isOld) {
-      name = oldListName;
     }
     return {
       ...obj,
@@ -123,21 +124,11 @@ function generatePunchlistMarkdown(context, reminders) {
     };
   }, {});
 
-  const nonPrioritisedList = Object.keys(filteredRemindersHash).filter(
-    list =>
-      !prioritisedList.includes(list) &&
-      list !== overDueListName &&
-      list !== todayListName &&
-      list !== oldListName
-  );
+  const prioritisedList = Object.values(projectSettings)
+    .sort((a, b) => a.priority < b.priority)
+    .map(l => l.name);
 
-  const list = [
-    overDueListName,
-    todayListName,
-    oldListName,
-    ...prioritisedList,
-    ...nonPrioritisedList,
-  ]
+  const list = [overDueListName, todayListName, oldListName, ...prioritisedList]
     .filter(listName => filteredRemindersHash[listName])
     .map(list => {
       const reminders = filteredRemindersHash[list] || [];
