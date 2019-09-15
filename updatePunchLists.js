@@ -83,8 +83,6 @@ async function updatePunchlists() {
   });
 }
 
-await updatePunchlists();
-
 function generatePunchlistMarkdown(context, reminders, projectSettings) {
   const filteredReminders = reminders
     .filter(
