@@ -141,14 +141,20 @@ async function getProjects() {
   );
 }
 
+function getTagsFromNote(note) {
+  return note && note.match(/(^|\s)#[a-zA-Z0-9][\w-]*\b/g).map(m => m.trim());
+}
+
 async function startTimer(reminder) {
   const projects = await getProjects();
   const pid = projects[reminder.calendar.title];
+  const tags = getTagsFromNote(reminder.notes).map(t => t.replace('#', ''));
   const body = {
     time_entry: {
       pid,
       description: reminder.title,
       created_with: 'scriptable',
+      tags,
     },
   };
 
