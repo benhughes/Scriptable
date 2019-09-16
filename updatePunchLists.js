@@ -93,11 +93,18 @@ function generatePunchlistMarkdown(context, reminders, projectSettings) {
         ) &&
         (reminder.notes.includes('#now') || isDueOrOverDue(reminder))
     )
-    .sort((a, b) =>
-      moment(a.dueDate || threeDaysTime).diff(
+    .sort((a, b) => {
+      const dateDiff = moment(a.dueDate || threeDaysTime).diff(
         moment(b.dueDate || threeDaysTime)
-      )
-    );
+      );
+      if (dateDiff === 0) {
+        return (
+          projectSettings[a.calendar.title].priority <
+          projectSettings[b.calendar.title].priority
+        );
+      }
+      return dateDiff;
+    });
 
   const focusReminders = filteredReminders.filter(r =>
     r.notes.includes(focusTag)
